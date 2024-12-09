@@ -1,0 +1,117 @@
+#include "../../includes/minirt.h"
+
+void	handle_parse_error(char **tokens, const char *error_message)
+{
+	printf("%s\n", error_message);
+	clean_2d_array(tokens);
+}
+
+char	**split_and_validate(char *str, int expected_parts)
+{
+	char	**tokens;
+	int		i;
+
+	tokens = ft_split(str, ',');
+	if (!tokens)
+		return (NULL);
+	i = 0;
+	while (i < expected_parts)
+	{
+		if (!tokens[i])
+		{
+			handle_parse_error(tokens, "Error: Invalid token format");
+			return (NULL);
+		}
+		i++;
+	}
+	return (tokens);
+}
+
+int	normalize_orientation(t_cylinder *cylinder)
+{
+	double	length;
+
+	length = sqrt(pow(cylinder->orientation.x, 2)
+			+ pow(cylinder->orientation.y, 2)
+			+ pow(cylinder->orientation.z, 2));
+	if (length == 0.0)
+	{
+		printf("Error: Cylinder orientation vector cannot be zero\n");
+		return (0);
+	}
+	cylinder->orientation.x /= length;
+	cylinder->orientation.y /= length;
+	cylinder->orientation.z /= length;
+	return (1);
+}
+
+int	parse_cylinder_properties(char **tokens, t_cylinder *cylinder)
+{
+	char	**center_tokens;
+	char	**orientation_tokens;
+
+	center_tokens = split_and_validate(tokens[1], 3);
+	if (!center_tokens)
+		return (0);
+	cylinder->center.x = ft_atof(center_tokens[0]);
+	cylinder->center.y = ft_atof(center_tokens[1]);
+	cylinder->center.z = ft_atof(center_tokens[2]);
+	clean_2d_array(center_tokens);
+	orientation_tokens = split_and_validate(tokens[2], 3);
+	if (!orientation_tokens)
+		return (0);
+	cylinder->orientation.x = ft_atof(orientation_tokens[0]);
+	cylinder->orientation.y = ft_atof(orientation_tokens[1]);
+	cylinder->orientation.z = ft_atof(orientation_tokens[2]);
+	clean_2d_array(orientation_tokens);
+	return (normalize_orientation(cylinder));
+}
+
+int	parse_color(char *color_str, t_color *color)
+{
+	char	**color_tokens;
+
+	color_tokens = split_and_validate(color_str, 3);
+	if (!color_tokens)
+		return (0);
+	color->r = ft_atoi(color_tokens[0]);
+	color->g = ft_atoi(color_tokens[1]);
+	color->b = ft_atoi(color_tokens[2]);
+	clean_2d_array(color_tokens);
+	return (1);
+}
+
+void	parse_cylinder(char *line, t_scene *scene)
+{
+	t_cylinder	cylinder;
+	char		**tokens;
+
+	tokens = ft_split(line, ' ');
+	if (!tokens || ft_arraylen(tokens) != 6)
+	{
+		perror("Error: Memory allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	if (ft_strncmp(tokens[0], "cy", 2) != 0)
+		return (handle_parse_error(tokens, "Error: Invalid cylinder format"));
+	if (!parse_cylinder_properties(tokens, &cylinder))
+		return (handle_parse_error(tokens,
+				"Error: Invalid cylinder properties"));
+	cylinder.diameter = ft_atof(tokens[3]);
+	cylinder.height = ft_atof(tokens[4]);
+	if (!parse_color(tokens[5], &cylinder.color))
+		return (handle_parse_error(tokens,
+				"Error: Invalid cylinder color format"));
+	cylinder.radius = cylinder.diameter / 2.0;
+	if (scene->num_cylinders >= 65536)
+		return (handle_parse_error(tokens, "Error: Cylinder array is full\n"));
+	scene->cylinders[scene->num_cylinders] = cylinder;
+	scene->num_cylinders++;
+	clean_2d_array(tokens);
+}
+
+    //i wonder if it is possible like this (cleaning the 2d array from 
+    // handle_parse_error() i think so but still need to check :-)
+    // functions are in norminette limits but number of functions 
+    // per file need to be maximum 5, so some functions have to be 
+    // moved to other files, if you get what i'm sayin' right 8)
