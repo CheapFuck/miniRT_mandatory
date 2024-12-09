@@ -1,0 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   intersection1.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/12/09 15:43:33 by diwang        #+#    #+#                 */
+/*   Updated: 2024/12/09 16:03:05 by diwang        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minirt.h"
+
+#define EPSILON 1e-6
+
+// Step 2: Solve quadratic equation and check discriminant
+static int	solve_quadratic(double *components, double *t1, double *t2)
+{
+	double	discriminant;
+
+	discriminant = components[1] * components[1] - 4 * components[0]
+		* components[2];
+	if (discriminant < EPSILON)
+		return (0);
+	*t1 = (-components[1] - sqrt(discriminant)) / (2.0 * components[0]);
+	*t2 = (-components[1] + sqrt(discriminant)) / (2.0 * components[0]);
+	return (1);
+}
+
+// Step 3: Check if intersection points are within cylinder's height
+static int	check_cylinder_height(t_ray *ray, t_cylinder *cylinder,
+				double t, t_vector axis)
+{
+	t_vector	intersection;
+	double		height;
+
+	intersection = add(ray->origin, multiply_scalar(ray->direction, t));
+	height = dot(subtract(intersection, cylinder->center), axis);
+	return (fabs(height) <= cylinder->height / 2);
+}
+
+// Main function: Intersect ray with cylinder
+int	intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double *t)
+{
+	t_vector	axis;
+	double		components[3];
+	double		t1;
+	double		t2;
+	int			hit;
+
+	axis = normalize(cylinder->orientation);
+	calculate_cylinder_quadratic(ray, cylinder, components);
+	if (!solve_quadratic(components, &t1, &t2))
+		return (0);
+	hit = 0;
+	if (t1 > 0 && check_cylinder_height(ray, cylinder, t1, axis))
+	{
+		*t = t1;
+		hit = 1;
+	}
+	if (t2 > 0 && check_cylinder_height(ray, cylinder, t2, axis) && (!hit || t2
+			< *t))
+	{
+		*t = t2;
+		hit = 1;
+	}
+	return (hit);
+}
