@@ -11,6 +11,9 @@ t_vector	add(t_vector a, t_vector b)
 {
 	t_vector	result;
 
+
+
+
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
 	result.z = a.z + b.z;
