@@ -35,6 +35,7 @@ static void	init_scene(t_scene *scene)
 	scene->num_cylinders = 0;
 	scene->num_lights = 0;
 	scene->num_planes = 0;
+	scene->num_discs = 0;
 }
 
 // Main function

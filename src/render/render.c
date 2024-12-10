@@ -22,14 +22,30 @@
 // }	t_render_data;
 
 // Function declarations
-t_ray		create_ray(int x, int y, t_camera *camera);
-t_vector	world_to_local(t_vector point, t_vector orientation,
-				t_vector center);
+// t_ray		create_ray(int x, int y, t_camera *camera);
+// t_vector	world_to_local(t_vector point, t_vector orientation,
+// 				t_vector center);
 
 int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
+
+double	vector_length(t_vector v)
+{
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+}
+
+t_vector	scale(t_vector v, double s)
+{
+	t_vector result;
+
+	result.x = v.x * s;
+	result.y = v.y * s;
+	result.z = v.z * s;
+	return (result);
+}
+
 
 // Function to create a ray from the camera for a specific pixel
 t_ray	create_ray(int x, int y, t_camera *camera)

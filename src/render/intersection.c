@@ -52,8 +52,6 @@ int	intersect_plane(t_ray *ray, t_plane *plane, double *t)
 	return (1);
 }
 
-#define EPSILON 1e-6
-
 static void	compute_d_o_vectors(t_ray *ray, t_cylinder *cylinder,
 								t_vector *d, t_vector *o)
 {

@@ -14,9 +14,9 @@
 # include "utils.h"
 # include "render.h"
 
-# define WIDTH      1280
+# define WIDTH      1280	
 # define HEIGHT     1024
-# define SAMPLES    8
+# define SAMPLES    1
 # define EPSILON	1e-6 // Threshold for floating-point precision errors
 
 void		render_scene(mlx_t *mlx, t_scene *scene);

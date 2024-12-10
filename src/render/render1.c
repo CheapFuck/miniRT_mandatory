@@ -27,8 +27,7 @@ static int	handle_cylinders(t_ray *ray, t_scene *scene, double *t,
 	while (i < scene->num_cylinders)
 	{
 		t_cylinder = *t;
-		if (intersect_cylinder(ray, &scene->cylinders[i], &t_cylinder)
-			&& t_cylinder < *t)
+		if (intersect_cylinder(ray, &scene->cylinders[i], &t_cylinder) && t_cylinder < *t)
 		{
 			*t = t_cylinder;
 			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
@@ -69,6 +68,33 @@ static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
 	}
 	return (hit);
 }
+static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_color)
+{
+    int hit = 0;
+    int i = 0;
+    double t_disc;
+    t_vector hit_point;
+	t_vector	normal;
+
+    while (i < scene->num_discs)
+    {
+        t_disc = *t;
+        if (intersect_disc(ray, &scene->discs[i], &t_disc) && t_disc < *t)
+        {
+            *t = t_disc;
+            hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
+			normal = normalize(subtract(hit_point, scene->discs[i].center));
+            *final_color = apply_lighting(hit_point, scene->discs[i].normal, scene->discs[i].color, scene);
+            hit = 1;
+        }
+        i++;
+    }
+
+    return hit;
+}
+
+
+
 
 // Trace ray and determine pixel color
 static uint32_t	trace_ray(t_ray ray, t_scene *scene)
@@ -85,6 +111,8 @@ static uint32_t	trace_ray(t_ray ray, t_scene *scene)
 	if (handle_cylinders(&ray, scene, &t, &final_color))
 		hit = 1;
 	if (handle_planes(&ray, scene, &t, &final_color))
+		hit = 1;
+	if (handle_discs(&ray, scene, &t, &final_color))
 		hit = 1;
 	if (hit)
 		return ((final_color.r << 24) | (final_color.g << 16)
@@ -104,10 +132,10 @@ void	render_next_row(void *param)
 	if (data->current_row >= HEIGHT)
 	{
 		data->render_complete = true;
-		printf("Rendering complete!\n");
-		mlx_terminate(data->mlx);
-		free(data);
-		exit(EXIT_SUCCESS);
+		// printf("Rendering complete!\n");
+		// mlx_terminate(data->mlx);
+		// free(data);
+		// exit(EXIT_SUCCESS);
 		return ;
 	}
 	x = 0;

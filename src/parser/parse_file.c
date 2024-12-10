@@ -65,7 +65,10 @@ void	parse_scene_element(char *line, t_scene *scene)
 	else if (ft_strncmp(line, "pl ", 3) == 0)
 		parse_plane(line, scene);
 	else if (ft_strncmp(line, "cy ", 3) == 0)
+	{
 		parse_cylinder(line, scene);
+		parse_discs(line, scene);
+	}
 	else if (ft_strncmp(line, "#", 1) != 0)
 	{
 		printf("line is: %s\n", line);
