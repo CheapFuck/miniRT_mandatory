@@ -1,18 +1,20 @@
-#include "../includes/minirt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/12/09 16:02:06 by diwang        #+#    #+#                 */
+/*   Updated: 2024/12/09 16:02:07 by diwang        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	exit_with_error(const char *msg)
-{
-	if (msg)
-		fprintf(stderr, "Error: %s\n", msg);
-	exit(EXIT_FAILURE);
-}
+#include "../includes/minirt.h"
 
 t_vector	add(t_vector a, t_vector b)
 {
 	t_vector	result;
-
-
-
 
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
@@ -38,11 +40,6 @@ t_vector	multiply_scalar(t_vector v, double scalar)
 	result.y = v.y * scalar;
 	result.z = v.z * scalar;
 	return (result);
-}
-
-double	dot(t_vector a, t_vector b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
 t_vector	normalize(t_vector v)

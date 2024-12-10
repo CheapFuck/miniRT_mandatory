@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parse_light.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/12/09 15:47:07 by diwang        #+#    #+#                 */
+/*   Updated: 2024/12/09 15:47:10 by diwang        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minirt.h"
 
 int	parse_light_position(char **tokens, t_light *light)

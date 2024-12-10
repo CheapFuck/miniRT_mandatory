@@ -11,14 +11,20 @@ INCLUDE			:=	-L libft -lft
 
 SRC = src/main.c \
       src/render/render.c \
+	  src/render/render1.c \
+	  src/render/render2.c \
       src/render/intersection.c \
+	  src/render/intersection1.c \
       src/render/lighting.c \
+	  src/render/lighting1.c \
       src/utils.c \
+	  src/utils1.c \
 	  src/parser/parse_camera.c \
 	  src/parser/parse_file.c \
 	  src/parser/parse_light.c \
   	  src/parser/parse_plane.c \
 	  src/parser/parse_cylinder.c \
+	  src/parser/parse_cylinder1.c \
   	  src/parser/parse_sphere.c \
 	  
 OBJ = $(SRC:.c=.o)

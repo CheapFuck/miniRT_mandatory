@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   render.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/12/09 15:47:43 by diwang        #+#    #+#                 */
+/*   Updated: 2024/12/09 16:02:46 by diwang        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minirt.h"
 
 // typedef struct	s_render_data
@@ -25,12 +37,11 @@ t_ray	create_ray(int x, int y, t_camera *camera)
 	t_ray	ray;
 
 	ray.origin = camera->pos;
-    //Calculate direction from camera to pixel (simple perspective projection)
 	ray.direction.x = (2 * (x + 0.5) / (double)WIDTH - 1) * tan(camera->fov
 			/ 2 * M_PI / 180);
 	ray.direction.y = (1 - 2 * (y + 0.5) / (double)HEIGHT) * tan(camera->fov
 			/ 2 * M_PI / 180);
-	ray.direction.z = 1; // Assume camera is looking along the positive z-axis
+	ray.direction.z = 1;
 	ray.direction = normalize(ray.direction);
 	return (ray);
 }
@@ -76,7 +87,7 @@ t_vector	world_to_local(t_vector point, t_vector orientation,
 }
 
 // Handle sphere intersections and update color
-static int	handle_spheres(t_ray *ray, t_scene *scene, double *t,
+int	handle_spheres(t_ray *ray, t_scene *scene, double *t,
 					t_color *final_color)
 {
 	int			i;
@@ -103,156 +114,4 @@ static int	handle_spheres(t_ray *ray, t_scene *scene, double *t,
 		i++;
 	}
 	return (hit);
-}
-
-// Handle cylinder intersections and update color
-static int	handle_cylinders(t_ray *ray, t_scene *scene, double *t,
-					t_color *final_color)
-{
-	int			i;
-	int			hit;
-	double		t_cylinder;
-	t_vector	hit_point;
-	t_vector	normal;
-
-	hit = 0;
-	i = 0;
-	while (i < scene->num_cylinders)
-	{
-		t_cylinder = *t;
-		if (intersect_cylinder(ray, &scene->cylinders[i], &t_cylinder)
-			&& t_cylinder < *t)
-		{
-			*t = t_cylinder;
-			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
-			normal = normalize(subtract(hit_point, scene->cylinders[i].center));
-			*final_color = apply_lighting(hit_point, normal,
-					scene->cylinders[i].color, scene);
-			hit = 1;
-		}
-		i++;
-	}
-	return (hit);
-}
-
-// Handle plane intersections and update color
-static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
-					t_color *final_color)
-{
-	int			i;
-	int			hit;
-	double		t_plane;
-	t_vector	hit_point;
-
-	hit = 0;
-	i = 0;
-	while (i < scene->num_planes)
-	{
-		t_plane = *t;
-		if (intersect_plane(ray, &scene->planes[i], &t_plane)
-			&& t_plane < *t)
-		{
-			*t = t_plane;
-			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
-			*final_color = apply_lighting(hit_point, scene->planes[i].normal,
-					scene->planes[i].color, scene);
-			hit = 1;
-		}
-		i++;
-	}
-	return (hit);
-}
-
-// Trace ray and determine pixel color
-static uint32_t	trace_ray(t_ray ray, t_scene *scene)
-{
-	double		t;
-	t_color		final_color;
-	int			hit;
-
-	t = INFINITY;
-	hit = 0;
-	final_color = (t_color){0, 0, 0};
-	if (handle_spheres(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (handle_cylinders(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (handle_planes(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (hit)
-		return ((final_color.r << 24) | (final_color.g << 16)
-			| (final_color.b << 8) | 0xFF);
-	return (0x000000FF);
-}
-
-// Main function for rendering the next row
-void	render_next_row(void *param)
-{
-	t_render_data	*data;
-	int				x;
-	t_ray			ray;
-	uint32_t		color;
-
-	data = (t_render_data *)param;
-	if (data->current_row >= HEIGHT)
-	{
-		data->render_complete = true;
-		printf("Rendering complete!\n");
-		mlx_terminate(data->mlx);
-		free(data);
-		exit(EXIT_SUCCESS);
-		return ;
-	}
-	x = 0;
-	while (x < WIDTH)
-	{
-		ray = create_ray(x, data->current_row, &data->scene->camera);
-		color = trace_ray(ray, data->scene);
-		mlx_put_pixel(data->img, x, data->current_row, color);
-		x++;
-	}
-	data->current_row++;
-}
-
-// Allocate and initialize render data
-static t_render_data	*init_render_data(mlx_t *mlx, t_scene *scene,
-										mlx_image_t *img)
-{
-	t_render_data	*data;
-
-	data = malloc(sizeof(t_render_data));
-	if (!data)
-		exit_with_error("Failed to allocate render data");
-	data->mlx = mlx;
-	data->img = img;
-	data->scene = scene;
-	data->current_row = 0;
-	data->render_complete = false;
-	return (data);
-}
-
-// Create and initialize an MLX image
-static mlx_image_t	*create_image(mlx_t *mlx)
-{
-	mlx_image_t	*img;
-
-	img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!img)
-		exit_with_error("Error creating image");
-	return (img);
-}
-
-// Main render scene function
-void	render_scene(mlx_t *mlx, t_scene *scene)
-{
-	mlx_image_t		*img;
-	t_render_data	*data;
-
-	img = create_image(mlx);
-	data = init_render_data(mlx, scene, img);
-	mlx_image_to_window(mlx, img, 0, 0);
-	mlx_loop_hook(mlx, render_next_row, data);
-	mlx_loop(mlx);
-	mlx_terminate(mlx); //no need?
-	// free(data);
 }
