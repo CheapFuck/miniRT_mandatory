@@ -20,7 +20,7 @@ typedef struct s_light
 
 typedef struct s_plane
 {
-	int			checker;
+	// int			checker;
 	t_vector	point;
 	t_vector	normal;
 	t_color		color;
