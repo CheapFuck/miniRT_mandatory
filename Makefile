@@ -45,5 +45,6 @@ clean:
 	rm -rf $(LIBMLX)/build
 
 fclean: clean
+	rm -rf miniRT
 
 re: fclean all
