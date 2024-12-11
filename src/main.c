@@ -47,7 +47,6 @@ void ft_hook(void* param)
 		mlx_close_window(mlx);
 		exit(EXIT_SUCCESS);
 	}
-
 }
 
 
