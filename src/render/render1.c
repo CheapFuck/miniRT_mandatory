@@ -76,6 +76,9 @@ static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_co
     t_vector hit_point;
 	t_vector	normal;
 
+	t_color single;
+	t_color gradient;
+
     while (i < scene->num_discs)
     {
         t_disc = *t;
@@ -84,7 +87,9 @@ static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_co
             *t = t_disc;
             hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
 			normal = normalize(subtract(hit_point, scene->discs[i].center));
-            *final_color = apply_lighting(hit_point, scene->discs[i].normal, scene->discs[i].color, scene);
+            gradient = apply_lighting(hit_point, normal, scene->discs[i].color, scene);
+			single = apply_lighting(hit_point, scene->discs[i].normal, scene->discs[i].color, scene);
+			*final_color = combine_color(single, gradient);
             hit = 1;
         }
         i++;

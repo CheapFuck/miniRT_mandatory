@@ -38,9 +38,9 @@ double	compute_shadow_factor(t_vector hit_point, t_light light,
 static t_color	compute_ambient_light(t_color light_contribution,
 	double ambient_ratio)
 {
-	light_contribution.r = 255 * ambient_ratio;
-	light_contribution.g = 255 * ambient_ratio;
-	light_contribution.b = 255 * ambient_ratio;
+	light_contribution.r = light_contribution.r * ambient_ratio;
+	light_contribution.g = light_contribution.g * ambient_ratio;
+	light_contribution.b = light_contribution.b * ambient_ratio;
 	return (light_contribution);
 }
 
@@ -59,9 +59,9 @@ static t_color	compute_light_contribution(t_vector hit_point, t_vector normal,
 		light_dir = normalize(subtract(light.pos, hit_point));
 		diffuse_intensity = fmax(0.0, dot(normal, light_dir))
 			* light.brightness * shadow_factor;
-		contribution.r = 255 * diffuse_intensity;
-		contribution.g = 255 * diffuse_intensity;
-		contribution.b = 255 * diffuse_intensity;
+		contribution.r = light.color.r * diffuse_intensity;
+		contribution.g = light.color.g * diffuse_intensity;
+		contribution.b = light.color.b * diffuse_intensity;
 	}
 	return (contribution);
 }
@@ -73,8 +73,15 @@ t_color	apply_lighting(t_vector hit_point, t_vector normal,
 	t_color		light_contribution;
 	t_color		current_contribution;
 
-	light_contribution = compute_ambient_light((t_color){0, 0, 0},
-			scene->ambient.ratio);
+	// printf("ambient.color.r is: %d\n", scene->ambient.color.r);
+	// printf("ambient.color.g is: %d\n", scene->ambient.color.g);
+	// printf("ambient.color.b is: %d\n", scene->ambient.color.b);
+// sleep(1);
+	light_contribution = compute_ambient_light(scene->ambient.color,scene->ambient.ratio);
+	// printf("light_contribution.r = %i\n", light_contribution.r);
+	// printf("light_contribution.g = %i\n", light_contribution.g);
+	// printf("light_contribution.b = %i\n", light_contribution.b);
+
 	i = 0;
 	while (i < scene->num_lights)
 	{

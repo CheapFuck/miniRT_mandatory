@@ -103,12 +103,17 @@ void	parse_ambient(char *line, t_scene *scene)
 	if (!tokens || ft_arraylen(tokens) != 3)
 		exit_with_error("Invalid ambient light format");
 	scene->ambient.ratio = ft_atof(tokens[1]);
+	printf("ambient.ratio is: %f\n", scene->ambient.ratio);
 	colors = ft_split(tokens[2], ',');
 	if (!colors || ft_arraylen(colors) != 3)
 		exit_with_error("Invalid ambient color format");
 	scene->ambient.color.r = ft_atoi(colors[0]);
 	scene->ambient.color.g = ft_atoi(colors[1]);
 	scene->ambient.color.b = ft_atoi(colors[2]);
+	// printf("ambient.color.r is: %d\n", scene->ambient.color.r);
+	// printf("ambient.color.g is: %d\n", scene->ambient.color.g);
+	// printf("ambient.color.b is: %d\n", scene->ambient.color.b);
+
 	ft_free_split(tokens);
 	ft_free_split(colors);
 }
