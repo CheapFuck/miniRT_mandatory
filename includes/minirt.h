@@ -14,9 +14,9 @@
 # include "utils.h"
 # include "render.h"
 
-# define WIDTH      1280
-# define HEIGHT     1024
-# define SAMPLES    8
+# define WIDTH      640	
+# define HEIGHT     480
+# define SAMPLES    1
 # define EPSILON	1e-6 // Threshold for floating-point precision errors
 
 void		render_scene(mlx_t *mlx, t_scene *scene);
@@ -26,5 +26,6 @@ int			main(int argc, char **argv);
 t_ray		create_ray(int x, int y, t_camera *camera);
 t_vector	world_to_local(t_vector point, t_vector orientation,
 				t_vector center);
+void		ft_hook(void* param);
 
 #endif // MINIRT_H

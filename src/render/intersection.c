@@ -52,8 +52,6 @@ int	intersect_plane(t_ray *ray, t_plane *plane, double *t)
 	return (1);
 }
 
-#define EPSILON 1e-6
-
 static void	compute_d_o_vectors(t_ray *ray, t_cylinder *cylinder,
 								t_vector *d, t_vector *o)
 {
@@ -87,3 +85,4 @@ void	calculate_cylinder_quadratic(t_ray *ray, t_cylinder *cylinder,
 	compute_d_o_vectors(ray, cylinder, &d, &o);
 	compute_quadratic_components(&d, &o, cylinder->radius, components);
 }
+

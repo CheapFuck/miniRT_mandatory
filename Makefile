@@ -1,7 +1,8 @@
 NAME = miniRT
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ofast -flto -I./includes -I./MLX42/include
-# MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
+# CFLAGS = -Wall -Wextra -Werror -Ofast -flto -I./includes -I./MLX42/include
+CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
+MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
 # --suppressions="mlx42.supp" 
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -lm
 LIBFTDIR 		:=	libft/
@@ -45,5 +46,6 @@ clean:
 	rm -rf $(LIBMLX)/build
 
 fclean: clean
+	rm -rf miniRT
 
 re: fclean all

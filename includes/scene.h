@@ -20,7 +20,7 @@ typedef struct s_light
 
 typedef struct s_plane
 {
-	int			checker;
+	// int			checker;
 	t_vector	point;
 	t_vector	normal;
 	t_color		color;
@@ -29,13 +29,25 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	t_vector	center;
-	int			checker;
+	// int			checker;
 	t_vector	orientation;
 	double		diameter;
 	double		height;
 	double		radius;
 	t_color		color;
 }	t_cylinder;
+
+
+typedef struct s_disc
+{
+	double		diameter;
+	double		height;
+	t_vector	orientation;
+    t_vector center;    // Center of the disc
+    t_vector normal;    // Normalized normal vector of the disc
+    double radius;      // Radius of the disc
+    t_color color;      // Color of the disc
+}	t_disc;
 
 typedef struct s_scene
 {
@@ -45,9 +57,11 @@ typedef struct s_scene
 	t_plane		planes[10];
 	t_sphere	spheres[10];
 	t_cylinder	cylinders[10];
+	t_disc	    discs[10];
 	int			num_spheres;
 	int			num_planes;
 	int			num_cylinders;
+	int			num_discs;
 	int			num_lights;
 }	t_scene;
 

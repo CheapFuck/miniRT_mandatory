@@ -23,3 +23,7 @@ double	dot(t_vector a, t_vector b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
+double length_squared(t_vector v)
+{
+    return (v.x * v.x + v.y * v.y + v.z * v.z);
+}

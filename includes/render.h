@@ -25,7 +25,17 @@ void	calculate_cylinder_quadratic(t_ray *ray, t_cylinder *cylinder, double *comp
 t_ray	generate_shadow_ray(t_vector hit_point, t_light light);
 double	compute_distance(t_vector a, t_vector b);
 int	is_in_shadow(t_ray *shadow_ray, t_scene *scene, double light_distance);
+t_ray		create_ray(int x, int y, t_camera *camera);
+t_vector	world_to_local(t_vector point, t_vector orientation,
+				t_vector center);
+int	intersect_cylinder_cap(t_ray *ray, t_cylinder *cylinder, t_vector axis, double half_height, double *t_cap);
+double	vector_length(t_vector v);
+t_vector	scale(t_vector v, double s);
+int intersect_disc(t_ray *ray, t_disc *disc, double *t);
+void parse_discs(char *line, t_scene *scene);
+int parse_disc_properties(char **tokens, t_disc *disc);
 
+// static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_color);
 
 #endif // RENDER_H
 
