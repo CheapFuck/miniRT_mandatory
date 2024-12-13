@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   objects.h                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/12/13 15:01:15 by diwang        #+#    #+#                 */
+/*   Updated: 2024/12/13 15:03:16 by diwang        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef OBJECTS_H
 # define OBJECTS_H
 
@@ -5,10 +17,10 @@
 
 typedef struct s_vec3
 {
-    double x;
-    double y;
-    double z;
-} t_vec3;
+	double	x;
+	double	y;
+	double	z;
+}	t_vec3;
 
 typedef struct s_vector
 {
@@ -44,9 +56,13 @@ typedef struct s_sphere
 	int			checker;
 	double		shininess;
 	t_vector	oc;
-	double		a, b, c;
-	double		discriminant, sqrt_discriminant;
-	double		t1, t2;
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
+	double		sqrt_discriminant;
+	double		t1;
+	double		t2;
 
 }	t_sphere;
 

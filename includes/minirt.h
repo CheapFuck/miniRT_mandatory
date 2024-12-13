@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   minirt.h                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/12/13 15:00:35 by diwang        #+#    #+#                 */
+/*   Updated: 2024/12/13 15:00:54 by diwang        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -26,6 +38,6 @@ int			main(int argc, char **argv);
 t_ray		create_ray(int x, int y, t_camera *camera);
 t_vector	world_to_local(t_vector point, t_vector orientation,
 				t_vector center);
-void		ft_hook(void* param);
+void		ft_hook(void *param);
 
 #endif // MINIRT_H
