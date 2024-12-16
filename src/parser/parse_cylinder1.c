@@ -15,7 +15,6 @@
 void	parse_cylinder(char *line, t_scene *scene)
 {
 	t_cylinder	cylinder;
-	// t_disc		disc;
 	char		**tokens;
 
 	tokens = ft_split(line, ' ');

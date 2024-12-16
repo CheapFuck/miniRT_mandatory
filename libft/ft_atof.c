@@ -14,23 +14,19 @@ double	ft_atof(const char *str)
 	fraction = 0.0;
 	sign = 1;
 	i = 0;
-	// Handle leading whitespace
 	while (isspace(str[i]))
 		i++;
-    // Handle sign
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
 			sign = -1;
 		i++;
 	}
-    // Convert integer part
 	while (isdigit(str[i]))
 	{
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
-    // Convert fractional part
 	if (str[i] == '.')
 	{
 		i++;

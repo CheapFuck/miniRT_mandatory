@@ -34,5 +34,6 @@ void	render_scene(mlx_t *mlx, t_scene *scene)
 	mlx_image_to_window(mlx, img, 0, 0);
 	mlx_loop_hook(mlx, render_next_row, data);
 	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	// mlx_terminate(mlx);
+	free(data);
 }
