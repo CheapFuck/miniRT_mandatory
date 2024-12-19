@@ -34,8 +34,8 @@ void	parse_cylinder(char *line, t_scene *scene)
 		return (handle_parse_error(tokens,
 				"Error: Invalid cylinder color format"));
 	cylinder.radius = cylinder.diameter / 2.0;
-	// if (scene->num_cylinders >= 65536)
-	// 	return (handle_parse_error(tokens, "Error: Cylinder array is full\n"));
+	if (scene->num_cylinders >= 65536)
+		return (handle_parse_error(tokens, "Error: Cylinder array is full\n"));
 	scene->cylinders[scene->num_cylinders] = cylinder;
 	scene->num_cylinders++;
 	clean_2d_array(tokens);
