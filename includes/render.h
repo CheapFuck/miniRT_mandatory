@@ -34,6 +34,7 @@ t_vector	scale(t_vector v, double s);
 int intersect_disc(t_ray *ray, t_disc *disc, double *t);
 void parse_discs(char *line, t_scene *scene);
 int parse_disc_properties(char **tokens, t_disc *disc);
+t_vector	cross(t_vector a, t_vector b);
 
 // static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_color);
 

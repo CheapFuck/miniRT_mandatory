@@ -49,6 +49,7 @@ static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
 	int			hit;
 	double		t_plane;
 	t_vector	hit_point;
+	t_vector	normal;
 
 	hit = 0;
 	i = 0;
@@ -60,7 +61,14 @@ static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
 		{
 			*t = t_plane;
 			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
-			*final_color = apply_lighting(hit_point, scene->planes[i].normal,
+
+			// Step 1: Check the normal direction
+			normal = scene->planes[i].normal;
+			if (dot(ray->direction, normal) > 0)
+				normal = multiply_scalar(normal, -1); // Flip the normal
+
+			// Step 2: Apply lighting with corrected normal
+			*final_color = apply_lighting(hit_point, normal,
 					scene->planes[i].color, scene);
 			hit = 1;
 		}
@@ -68,6 +76,7 @@ static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
 	}
 	return (hit);
 }
+
 static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_color)
 {
     int hit = 0;
