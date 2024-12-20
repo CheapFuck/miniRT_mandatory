@@ -6,7 +6,7 @@
 /*   By: diwang <diwang@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/09 15:46:49 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/09 16:00:46 by diwang        ########   odam.nl         */
+/*   Updated: 2024/12/20 13:25:40 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,36 @@ void handle_parse_error(char **tokens, const char *error_message)
 
 char **split_and_validate(char *str, int expected_parts)
 {
-	char **tokens;
-	int i;
+    char **tokens;
+    int i;
 
-	tokens = ft_split(str, ',');
-	if (!tokens)
-		return (NULL);
-	i = 0;
-	while (i < expected_parts)
-	{
-		if (!tokens[i])
-		{
-			handle_parse_error(tokens, "Error: Invalid token format");
-			return (NULL);
-		}
-		i++;
-	}
-	return (tokens);
+    tokens = ft_split(str, ',');
+    if (!tokens)
+        return (NULL);
+    
+    // Check if we have the expected number of parts
+    i = 0;
+    while (tokens[i])
+        i++;
+    if (i != expected_parts)
+    {
+        handle_parse_error(tokens, "Error: Wrong number of values");
+        return (NULL);
+    }
+
+    // Validate each token is a valid number
+    i = 0;
+    while (i < expected_parts)
+    {
+        if (!tokens[i] || !is_valid_number(tokens[i]))
+        {
+            handle_parse_error(tokens, "Error: Invalid number format");
+            return (NULL);
+        }
+        i++;
+    }
+    return (tokens);
 }
-
 int normalize_orientation(t_cylinder *cylinder)
 {
 	double length;

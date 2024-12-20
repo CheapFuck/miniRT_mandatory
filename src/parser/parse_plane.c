@@ -6,7 +6,7 @@
 /*   By: diwang <diwang@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/09 15:47:13 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/09 15:47:14 by diwang        ########   odam.nl         */
+/*   Updated: 2024/12/20 13:08:59 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,46 @@ int	parse_plane_color(char *token, t_color *color, char **tokens)
 	return (1);
 }
 
-void	parse_plane(char *line, t_scene *scene)
-{
-	char	**tokens;
-	t_plane	plane;
 
-	tokens = ft_split(line, ' ');
-	if (!tokens || ft_arraylen(tokens) != 4)
-		handle_plane_parse_error(tokens, NULL, "Invalid plane format");
-	if (!parse_plane_tokens(tokens[1], &plane.point))
-		handle_plane_parse_error(tokens, NULL, "Invalid plane point format");
-	if (!parse_plane_vector(tokens[2], &plane.normal, tokens))
-		return ;
-	if (!parse_plane_color(tokens[3], &plane.color, tokens))
-		return ;
-	if (scene->num_planes >= 65536)
-		handle_plane_parse_error(tokens, NULL, "Plane array is full");
-	scene->planes[scene->num_planes] = plane;
-	scene->num_planes++;
-	ft_free_split(tokens);
+void parse_plane(char *line, t_scene *scene)
+{
+    char    **tokens;
+    t_plane plane;
+    
+    tokens = ft_split(line, ' ');
+    if (!tokens || ft_arraylen(tokens) != 4)
+        handle_plane_parse_error(tokens, NULL, "Invalid plane format");
+    
+    // Parse point coordinates
+    if (!parse_plane_tokens(tokens[1], &plane.point))
+        handle_plane_parse_error(tokens, NULL, "Invalid plane point format");
+    
+    // Parse and validate normal vector
+    if (!parse_plane_tokens(tokens[2], &plane.normal))
+        handle_plane_parse_error(tokens, NULL, "Invalid plane normal format");
+    if (!validate_normalized_vector(&plane.normal, "Plane normal"))
+    {
+        ft_free_split(tokens);
+        return;
+    }
+    
+    // Parse and normalize the normal vector
+    if (!parse_plane_vector(tokens[2], &plane.normal, tokens))
+        return;
+    
+    // Parse and validate color
+    if (!parse_plane_color(tokens[3], &plane.color, tokens))
+        return;
+    if (!validate_color(&plane.color))
+    {
+        ft_free_split(tokens);
+        return;
+    }
+    
+    if (scene->num_planes >= 65536)
+        handle_plane_parse_error(tokens, NULL, "Plane array is full");
+    
+    scene->planes[scene->num_planes] = plane;
+    scene->num_planes++;
+    ft_free_split(tokens);
 }

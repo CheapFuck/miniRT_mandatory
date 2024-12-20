@@ -63,6 +63,9 @@ typedef struct s_scene
 	int			num_cylinders;
 	int			num_discs;
 	int			num_lights;
+	int has_ambient;    // Flag for ambient lighting
+    int has_camera;     // Flag for camera
+    int has_light;      // Flag for light
 }	t_scene;
 
 typedef struct	s_render_data

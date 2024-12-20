@@ -1,7 +1,7 @@
 NAME = miniRT
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ofast -flto -I./includes -I./MLX42/include
-# CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
+# CFLAGS = -Wall -Wextra -Werror -Ofast -flto -I./includes -I./MLX42/include
+CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
 # --suppressions="mlx42.supp" 
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -lm
@@ -27,6 +27,7 @@ SRC = src/main.c \
 	  src/parser/parse_cylinder.c \
 	  src/parser/parse_cylinder1.c \
   	  src/parser/parse_sphere.c \
+	  src/parser/parser_utils.c #
 	  
 OBJ = $(SRC:.c=.o)
 

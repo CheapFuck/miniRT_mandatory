@@ -6,39 +6,81 @@
 /*   By: diwang <diwang@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/09 15:59:46 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/09 16:03:27 by diwang        ########   odam.nl         */
+/*   Updated: 2024/12/20 13:09:54 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-void	parse_cylinder(char *line, t_scene *scene)
+void parse_cylinder(char *line, t_scene *scene)
 {
-	t_cylinder	cylinder;
-	char		**tokens;
+    t_cylinder  cylinder;
+    char        **tokens;
 
-	tokens = ft_split(line, ' ');
-	if (!tokens || ft_arraylen(tokens) != 6)
-	{
-		perror("Error: Memory allocation failed");
-		exit(EXIT_FAILURE);
-	}
-	if (ft_strncmp(tokens[0], "cy", 2) != 0)
-		return (handle_parse_error(tokens, "Error: Invalid cylinder format"));
-	if (!parse_cylinder_properties(tokens, &cylinder))
-		return (handle_parse_error(tokens,
-				"Error: Invalid cylinder properties"));
-	cylinder.diameter = ft_atof(tokens[3]);
-	cylinder.height = ft_atof(tokens[4]);
-	if (!parse_color(tokens[5], &cylinder.color))
-		return (handle_parse_error(tokens,
-				"Error: Invalid cylinder color format"));
-	cylinder.radius = cylinder.diameter / 2.0;
-	if (scene->num_cylinders >= 65536)
-		return (handle_parse_error(tokens, "Error: Cylinder array is full\n"));
-	scene->cylinders[scene->num_cylinders] = cylinder;
-	scene->num_cylinders++;
-	clean_2d_array(tokens);
+    tokens = ft_split(line, ' ');
+    if (!tokens || ft_arraylen(tokens) != 6)
+    {
+        perror("Error: Invalid cylinder format");
+        ft_free_split(tokens);
+        return;
+    }
+
+    // Parse cylinder properties (center and orientation)
+    if (!parse_cylinder_properties(tokens, &cylinder))
+    {
+        ft_free_split(tokens);
+        return;
+    }
+
+    // Validate normalized orientation vector
+    if (!validate_normalized_vector(&cylinder.orientation, "Cylinder orientation"))
+    {
+        ft_free_split(tokens);
+        return;
+    }
+
+    // Parse and validate diameter
+    cylinder.diameter = ft_atof(tokens[3]);
+    if (cylinder.diameter <= 0)
+    {
+        printf("Error: Cylinder diameter must be positive\n");
+        ft_free_split(tokens);
+        return;
+    }
+
+    // Parse and validate height
+    cylinder.height = ft_atof(tokens[4]);
+    if (cylinder.height <= 0)
+    {
+        printf("Error: Cylinder height must be positive\n");
+        ft_free_split(tokens);
+        return;
+    }
+
+    // Parse and validate color
+    if (!parse_color(tokens[5], &cylinder.color))
+    {
+        ft_free_split(tokens);
+        return;
+    }
+    if (!validate_color(&cylinder.color))
+    {
+        ft_free_split(tokens);
+        return;
+    }
+
+    cylinder.radius = cylinder.diameter / 2.0;
+    
+    if (scene->num_cylinders >= 65536)
+    {
+        printf("Error: Maximum number of cylinders exceeded\n");
+        ft_free_split(tokens);
+        return;
+    }
+
+    scene->cylinders[scene->num_cylinders] = cylinder;
+    scene->num_cylinders++;
+    ft_free_split(tokens);
 }
 
 void parse_discs(char *line, t_scene *scene)
