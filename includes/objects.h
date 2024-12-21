@@ -42,7 +42,7 @@ typedef struct s_sphere
 	double		radius;
 	t_color		color;
 	int			checker;
-	double		shininess;
+	double		shininess; //moet dit?
 	t_vector	oc;
 	double		a, b, c;
 	double		discriminant, sqrt_discriminant;

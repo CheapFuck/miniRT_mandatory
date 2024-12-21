@@ -14,8 +14,8 @@
 # include "utils.h"
 # include "render.h"
 
-# define WIDTH      320
-# define HEIGHT     240
+# define WIDTH      640
+# define HEIGHT     480
 # define SAMPLES    1
 # define EPSILON	1e-6 // Threshold for floating-point precision errors
 

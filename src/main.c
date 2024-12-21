@@ -36,7 +36,12 @@ static void	init_scene(t_scene *scene)
 	scene->num_lights = 0;
 	scene->num_planes = 0;
 	scene->num_discs = 0;
+	scene->has_ambient = 0;
+    scene->has_camera = 0;
+    scene->has_light = 0;
 }
+
+
 
 void ft_hook(void* param)
 {

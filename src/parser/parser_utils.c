@@ -109,13 +109,3 @@ int is_valid_number(const char *str)
     return has_digit;
 }
 
-void init_scene(t_scene *scene)
-{
-    scene->has_ambient = 0;
-    scene->has_camera = 0;
-    scene->has_light = 0;
-    scene->num_spheres = 0;
-    scene->num_planes = 0;
-    scene->num_cylinders = 0;
-    scene->num_lights = 0;
-}
