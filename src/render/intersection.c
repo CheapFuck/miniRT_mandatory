@@ -85,4 +85,3 @@ void	calculate_cylinder_quadratic(t_ray *ray, t_cylinder *cylinder,
 	compute_d_o_vectors(ray, cylinder, &d, &o);
 	compute_quadratic_components(&d, &o, cylinder->radius, components);
 }
-

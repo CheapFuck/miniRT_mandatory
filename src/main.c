@@ -37,23 +37,21 @@ static void	init_scene(t_scene *scene)
 	scene->num_planes = 0;
 	scene->num_discs = 0;
 	scene->has_ambient = 0;
-    scene->has_camera = 0;
-    scene->has_light = 0;
+	scene->has_camera = 0;
+	scene->has_light = 0;
 }
 
-
-
-void ft_hook(void* param)
+void	ft_hook(void *param)
 {
-	mlx_t* mlx = param;
+	mlx_t	*mlx;
 
+	mlx = param;
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 	{
 		mlx_close_window(mlx);
 		exit(EXIT_SUCCESS);
 	}
 }
-
 
 // Main function
 int	main(int argc, char **argv)

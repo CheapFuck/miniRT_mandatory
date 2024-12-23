@@ -38,7 +38,7 @@ double	vector_length(t_vector v)
 
 t_vector	scale(t_vector v, double s)
 {
-	t_vector result;
+	t_vector	result;
 
 	result.x = v.x * s;
 	result.y = v.y * s;
@@ -46,36 +46,35 @@ t_vector	scale(t_vector v, double s)
 	return (result);
 }
 
-
 // Function to create a ray from the camera for a specific pixel
 t_ray	create_ray(int x, int y, t_camera *camera)
 {
-	t_ray	ray;
-	t_vector	forward, right, up;
+	t_ray		ray;
+	t_vector	forward;
+	t_vector	right;
+	t_vector	up;
 	t_vector	image_point;
+	t_vector	r_vector;
+	double		aspect_ratio;
+	double		fov_scale;
 
-	t_vector r_vector = {0 , 1, 0};
-	// Step 1: Set up camera basis vectors
-	forward = normalize(camera->orientation); // Camera view direction
-	right = normalize(cross(r_vector, forward)); // Right vector
-	up = cross(forward, right); // Up vector
-
-	// Step 2: Map pixel coordinates to normalized device coordinates
-	double aspect_ratio = (double)WIDTH / HEIGHT;
-	double fov_scale = tan((camera->fov * M_PI / 180) / 2);
-
+	r_vector.x = 0;
+	r_vector.y = 1;
+	r_vector.z = 0;
+	forward = normalize(camera->orientation);
+	right = normalize(cross(r_vector, forward));
+	up = cross(forward, right);
+	aspect_ratio = (double)WIDTH / HEIGHT;
+	fov_scale = tan((camera->fov * M_PI / 180) / 2);
 	image_point.x = (2 * (x + 0.5) / WIDTH - 1) * aspect_ratio * fov_scale;
 	image_point.y = (1 - 2 * (y + 0.5) / HEIGHT) * fov_scale;
 	image_point.z = 1;
-
-	// Step 3: Transform image point to world space
 	ray.origin = camera->pos;
 	ray.direction = normalize(add(add(scale(right, image_point.x),
-									scale(up, image_point.y)),
-									scale(forward, image_point.z)));
+					scale(up, image_point.y)),
+				scale(forward, image_point.z)));
 	return (ray);
 }
-
 
 t_vector	cross(t_vector a, t_vector b)
 {

@@ -11,11 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-static void parse(char *error, char **tokens)
+
+static void	parse(char *error, char **tokens)
 {
 	printf("%s\n", error);
 	ft_free_split(tokens);
 }
+
 void	parse_cylinder(char *line, t_scene *scene)
 {
 	t_cylinder	cylinder;
@@ -42,19 +44,17 @@ void	parse_cylinder(char *line, t_scene *scene)
 	if (scene->num_cylinders >= 65536)
 		return (parse("Error: Maximum number of cylinders exceeded", tokens));
 	scene->cylinders[scene->num_cylinders++] = cylinder;
-	// scene->num_cylinders++;
 	ft_free_split(tokens);
 }
 
-
-static void disc_parse(t_scene *scene, t_disc disc, char **tokens)
+static void	disc_parse(t_scene *scene, t_disc disc, char **tokens)
 {
-	t_disc bottom_disc;
-	t_vector bottom_offset;
-	t_disc top_disc;
-	t_vector top_offset;
+	t_disc		bottom_disc;
+	t_vector	bottom_offset;
+	t_disc		top_disc;
+	t_vector	top_offset;
 
-	bottom_offset = multiply_scalar( disc.orientation, -0.5 * disc.height);
+	bottom_offset = multiply_scalar(disc.orientation, -0.5 * disc.height);
 	bottom_disc.center = add(disc.center, bottom_offset);
 	bottom_disc.normal = disc.orientation;
 	bottom_disc.radius = disc.radius;
@@ -88,4 +88,3 @@ void	parse_discs(char *line, t_scene *scene)
 	disc_parse(scene, disc, tokens);
 	ft_free_split(tokens);
 }
-

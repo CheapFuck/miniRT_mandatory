@@ -73,15 +73,8 @@ t_color	apply_lighting(t_vector hit_point, t_vector normal,
 	t_color		light_contribution;
 	t_color		current_contribution;
 
-	// printf("ambient.color.r is: %d\n", scene->ambient.color.r);
-	// printf("ambient.color.g is: %d\n", scene->ambient.color.g);
-	// printf("ambient.color.b is: %d\n", scene->ambient.color.b);
-// sleep(1);
-	light_contribution = compute_ambient_light(scene->ambient.color,scene->ambient.ratio);
-	// printf("light_contribution.r = %i\n", light_contribution.r);
-	// printf("light_contribution.g = %i\n", light_contribution.g);
-	// printf("light_contribution.b = %i\n", light_contribution.b);
-
+	light_contribution = compute_ambient_light(scene->ambient.color,
+			scene->ambient.ratio);
 	i = 0;
 	while (i < scene->num_lights)
 	{

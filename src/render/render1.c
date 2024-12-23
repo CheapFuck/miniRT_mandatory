@@ -27,7 +27,8 @@ static int	handle_cylinders(t_ray *ray, t_scene *scene, double *t,
 	while (i < scene->num_cylinders)
 	{
 		t_cylinder = *t;
-		if (intersect_cylinder(ray, &scene->cylinders[i], &t_cylinder) && t_cylinder < *t)
+		if (intersect_cylinder(ray, &scene->cylinders[i], &t_cylinder)
+			&& t_cylinder < *t)
 		{
 			*t = t_cylinder;
 			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
@@ -42,73 +43,81 @@ static int	handle_cylinders(t_ray *ray, t_scene *scene, double *t,
 }
 
 // Handle plane intersections and update color
-static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
-					t_color *final_color)
+static int	handle_single_plane(t_ray *ray, t_plane *plane, double *t,
+					t_color *final_color, t_scene *scene)
 {
-	int			i;
-	int			hit;
 	double		t_plane;
 	t_vector	hit_point;
 	t_vector	normal;
+
+	t_plane = *t;
+	if (intersect_plane(ray, plane, &t_plane) && t_plane < *t)
+	{
+		*t = t_plane;
+		hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
+		normal = plane->normal;
+		if (dot(ray->direction, normal) > 0)
+			normal = multiply_scalar(normal, -1);
+		*final_color = apply_lighting(hit_point, normal, plane->color, scene);
+		return (1);
+	}
+	return (0);
+}
+
+static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
+					t_color *final_color)
+{
+	int	i;
+	int	hit;
 
 	hit = 0;
 	i = 0;
 	while (i < scene->num_planes)
 	{
-		t_plane = *t;
-		if (intersect_plane(ray, &scene->planes[i], &t_plane)
-			&& t_plane < *t)
-		{
-			*t = t_plane;
-			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
-
-			// Step 1: Check the normal direction
-			normal = scene->planes[i].normal;
-			if (dot(ray->direction, normal) > 0)
-				normal = multiply_scalar(normal, -1); // Flip the normal
-
-			// Step 2: Apply lighting with corrected normal
-			*final_color = apply_lighting(hit_point, normal,
-					scene->planes[i].color, scene);
+		if (handle_single_plane(ray, &scene->planes[i], t, final_color, scene))
 			hit = 1;
-		}
 		i++;
 	}
 	return (hit);
 }
 
-static int handle_discs(t_ray *ray, t_scene *scene, double *t, t_color *final_color)
+static int	handle_single_disc(t_ray *ray, t_disc *disc, double *t, t_color *final_color, t_scene *scene)
 {
-    int hit = 0;
-    int i = 0;
-    double t_disc;
-    t_vector hit_point;
+	double		t_disc;
+	t_vector	hit_point;
 	t_vector	normal;
+	t_color		gradient;
 
-	t_color single;
-	t_color gradient;
-
-    while (i < scene->num_discs)
-    {
-        t_disc = *t;
-        if (intersect_disc(ray, &scene->discs[i], &t_disc) && t_disc < *t)
-        {
-            *t = t_disc;
-            hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
-			normal = normalize(subtract(hit_point, scene->discs[i].center));
-            gradient = apply_lighting(hit_point, normal, scene->discs[i].color, scene);
-			single = apply_lighting(hit_point, scene->discs[i].normal, scene->discs[i].color, scene);
-			*final_color = combine_color(single, gradient);
-            hit = 1;
-        }
-        i++;
-    }
-
-    return hit;
+	t_disc = *t;
+	if (intersect_disc(ray, disc, &t_disc) && t_disc < *t)
+	{
+		*t = t_disc;
+		hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
+		normal = normalize(subtract(hit_point, disc->center));
+		gradient = apply_lighting(hit_point, normal, disc->color, scene);
+		*final_color = combine_color(apply_lighting(hit_point, disc->normal,
+					disc->color, scene), gradient);
+		return (1);
+	}
+	return (0);
 }
 
+static int	handle_discs(t_ray *ray, t_scene *scene, double *t,
+	t_color *final_color)
+{
+	int	hit;
+	int	i;
 
-
+	hit = 0;
+	i = 0;
+	while (i < scene->num_discs)
+	{
+		if (handle_single_disc(ray, &scene->discs[i], t, final_color, scene))
+			hit = 1;
+		i++;
+	}
+	return (hit);
+}
 
 // Trace ray and determine pixel color
 static uint32_t	trace_ray(t_ray ray, t_scene *scene)
