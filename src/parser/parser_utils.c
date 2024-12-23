@@ -49,35 +49,37 @@ int validate_unique_element(t_scene *scene, char type)
     printf("Current flags - Ambient: %d, Camera: %d, Light: %d\n",  // Debug print
            scene->has_ambient, scene->has_camera, scene->has_light);
     
-    switch (type)
+    if (type == 'A')
     {
-        case 'A':
-            if (scene->has_ambient)
-            {
-                printf("Error: Ambient lighting (A) can only be declared once\n");
-                return 0;
-            }
-            scene->has_ambient = 1;
-            break;
-        case 'C':
-            if (scene->has_camera)
-            {
-                printf("Error: Camera (C) can only be declared once\n");
-                return 0;
-            }
-            scene->has_camera = 1;
-            break;
-        case 'L':
-            if (scene->has_light)
-            {
-                printf("Error: Light (L) can only be declared once\n");
-                return 0;
-            }
-            scene->has_light = 1;
-            break;
+        if (scene->has_ambient)
+        {
+            printf("Error: Ambient lighting (A) can only be declared once\n");
+	        exit(EXIT_FAILURE);
+        }
+        scene->has_ambient = 1;
     }
+    else if (type == 'C')
+    {
+        if (scene->has_camera)
+        {
+            printf("Error: Camera (C) can only be declared once\n");
+      	    exit(EXIT_FAILURE);
+        }
+        scene->has_camera = 1;
+    }
+    else if (type == 'L')
+    {
+        if (scene->has_light)
+        {
+            printf("Error: Light (L) can only be declared once\n");
+    	    exit(EXIT_FAILURE);
+        }
+        scene->has_light = 1;
+    }
+    
     return 1;
 }
+
 int is_valid_number(const char *str)
 {
     int i = 0;

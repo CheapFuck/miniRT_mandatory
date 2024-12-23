@@ -70,66 +70,57 @@ int	parse_light_color(char **tokens, t_light *light)
 	ft_free_split(color);
 	return (1);
 }
-void parse_light(char *line, t_scene *scene)
-{
-    char    **tokens;
-    t_light light;
 
-    if (!validate_unique_element(scene, 'L'))
-        return;
-    tokens = ft_split(line, ' ');
-    if (!tokens || ft_arraylen(tokens) != 4)
-    {
-        ft_free_split(tokens);
-        exit_with_error("Invalid light format");
-    }
-    if (!parse_light_position(tokens, &light))
-        return;
-    light.brightness = ft_atof(tokens[2]);
-    if (!validate_ratio(light.brightness, "Light brightness"))
-    {
-        ft_free_split(tokens);
-        return;
-    }
-    if (!parse_light_color(tokens, &light))
-        return;
-    if (!validate_color(&light.color))
-    {
-        ft_free_split(tokens);
-        return;
-    }
-    scene->lights[scene->num_lights] = light;
-    scene->num_lights++;
-    ft_free_split(tokens);
+void	parse_light(char *line, t_scene *scene)
+{
+	char		**tokens;
+	t_light		light;
+
+	validate_unique_element(scene, 'L');
+	tokens = ft_split(line, ' ');
+	if (!tokens || ft_arraylen(tokens) != 4)
+	{
+		ft_free_split(tokens);
+		exit_with_error("Invalid light format");
+	}
+	if (!parse_light_position(tokens, &light))
+		return ;
+	light.brightness = ft_atof(tokens[2]);
+	if (!validate_ratio(light.brightness, "Light brightness"))
+		return (ft_free_split(tokens));
+	if (!parse_light_color(tokens, &light))
+		return ;
+	if (!validate_color(&light.color))
+		return (ft_free_split(tokens));
+	scene->lights[scene->num_lights] = light;
+	scene->num_lights++;
+	ft_free_split(tokens);
 }
-void parse_ambient(char *line, t_scene *scene)
-{
-    char    **tokens;
-    char    **colors;
 
-    if (!validate_unique_element(scene, 'A'))
-        return;
-    tokens = ft_split(line, ' ');
-    if (!tokens || ft_arraylen(tokens) != 3)
-        exit_with_error("Invalid ambient light format");
-    scene->ambient.ratio = ft_atof(tokens[1]);
-    if (!validate_ratio(scene->ambient.ratio, "Ambient light"))
-    {
-        ft_free_split(tokens);
-        return;
-    }
-    colors = ft_split(tokens[2], ',');
-    if (!colors || ft_arraylen(colors) != 3)
-        exit_with_error("Invalid ambient color format");
-    scene->ambient.color.r = ft_atoi(colors[0]);
-    scene->ambient.color.g = ft_atoi(colors[1]);
-    scene->ambient.color.b = ft_atoi(colors[2]);
-    if (!validate_color(&scene->ambient.color))
-    {
-        ft_free_split(tokens);
-        ft_free_split(colors);
-        return;
-    }
-    ft_free_split(tokens);
-    ft_free_split(colors);
+void	parse_ambient(char *line, t_scene *scene)
+{
+	char	**tokens;
+	char	**colors;
+
+	validate_unique_element(scene, 'A');
+	tokens = ft_split(line, ' ');
+	if (!tokens || ft_arraylen(tokens) != 3)
+		exit_with_error("Invalid ambient light format");
+	scene->ambient.ratio = ft_atof(tokens[1]);
+	if (!validate_ratio(scene->ambient.ratio, "Ambient light"))
+		return (ft_free_split(tokens));
+	colors = ft_split(tokens[2], ',');
+	if (!colors || ft_arraylen(colors) != 3)
+		exit_with_error("Invalid ambient color format");
+	scene->ambient.color.r = ft_atoi(colors[0]);
+	scene->ambient.color.g = ft_atoi(colors[1]);
+	scene->ambient.color.b = ft_atoi(colors[2]);
+	if (!validate_color(&scene->ambient.color))
+	{
+		ft_free_split(tokens);
+		ft_free_split(colors);
+		return ;
+	}
+	ft_free_split(tokens);
+	ft_free_split(colors);
 }

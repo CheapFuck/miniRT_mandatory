@@ -1,7 +1,7 @@
 NAME = miniRT
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -Ofast -flto -I./includes -I./MLX42/include
-CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
+CFLAGS = -Wall -Wextra -Werror -Ofast -flto -I./includes -I./MLX42/include
+# CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
 # --suppressions="mlx42.supp" 
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -lm
@@ -35,7 +35,7 @@ all: libmlx $(NAME)
 
 
 libmlx:
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
+	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j48
 
 $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFTDIR)
