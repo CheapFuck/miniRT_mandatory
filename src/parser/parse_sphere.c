@@ -11,12 +11,41 @@
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
+
+
+static void sphere_parse(char **tokens, char **pos, t_sphere sphere, t_scene *scene)
+{
+    char        **colors;
+
+    colors = ft_split(tokens[3], ',');
+    if (!colors || ft_arraylen(colors) != 3)
+    {
+        ft_free_split(tokens);
+        ft_free_split(pos);
+        exit_with_error("Invalid sphere color format");
+    }
+    sphere.color.r = ft_atoi(colors[0]);
+    sphere.color.g = ft_atoi(colors[1]);
+    sphere.color.b = ft_atoi(colors[2]);
+    if (!validate_color(&sphere.color))
+    {
+        ft_free_split(tokens);
+        ft_free_split(pos);
+        ft_free_split(colors);
+        return;
+   ft_free_split(colors);
+    }
+    scene->spheres[scene->num_spheres] = sphere;
+    scene->num_spheres++;
+    ft_free_split(tokens);
+    ft_free_split(pos);
+}
+
 void parse_sphere(char *line, t_scene *scene)
 {
     t_sphere    sphere;
     char        **tokens;
     char        **pos;
-    char        **colors;
 
     tokens = ft_split(line, ' ');
     if (!tokens || ft_arraylen(tokens) != 4)
@@ -38,26 +67,5 @@ void parse_sphere(char *line, t_scene *scene)
         ft_free_split(pos);
         return;
     }
-    colors = ft_split(tokens[3], ',');
-    if (!colors || ft_arraylen(colors) != 3)
-    {
-        ft_free_split(tokens);
-        ft_free_split(pos);
-        exit_with_error("Invalid sphere color format");
-    }
-    sphere.color.r = ft_atoi(colors[0]);
-    sphere.color.g = ft_atoi(colors[1]);
-    sphere.color.b = ft_atoi(colors[2]);
-    if (!validate_color(&sphere.color))
-    {
-        ft_free_split(tokens);
-        ft_free_split(pos);
-        ft_free_split(colors);
-        return;
-    }
-    scene->spheres[scene->num_spheres] = sphere;
-    scene->num_spheres++;
-    ft_free_split(tokens);
-    ft_free_split(pos);
-    ft_free_split(colors);
+    sphere_parse(tokens, pos, sphere, scene);
 }

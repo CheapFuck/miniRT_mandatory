@@ -5,7 +5,7 @@
 
 // Parsing functions
 void		parse_file(const char *filename, t_scene *scene);
-void        handle_parse_error(char **tokens, const char *error_message);
+void        handle_pars_error(char **tokens, const char *error_message);
 char        **split_and_validate(char *str, int expected_parts);
 int         normalize_orientation(t_cylinder *cylinder);
 int         parse_cylinder_properties(char **tokens, t_cylinder *cylinder);
@@ -35,7 +35,7 @@ void		exit_with_error(const char *msg);
 
 int validate_ratio(double value, const char *element_name);
 int validate_color(t_color *color);
-int validate_normalized_vector(t_vector *vector, const char *element_name);
+int validate_nrmlzd_vector(t_vector *vector, const char *element_name);
 int validate_fov(int fov);
 int validate_unique_element(t_scene *scene, char type);
 int is_valid_number(const char *str);

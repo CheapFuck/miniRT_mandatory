@@ -23,7 +23,7 @@ int validate_color(t_color *color)
     return 1;
 }
 
-int validate_normalized_vector(t_vector *vector, const char *element_name)
+int validate_nrmlzd_vector(t_vector *vector, const char *element_name)
 {
     if (vector->x < -1.0 || vector->x > 1.0 || 
         vector->y < -1.0 || vector->y > 1.0 || 
@@ -35,8 +35,10 @@ int validate_normalized_vector(t_vector *vector, const char *element_name)
     return 1;
 }
 
-int validate_fov(int fov) {
-    if (fov < 0 || fov >= 180) {
+int validate_fov(int fov) 
+{
+    if (fov < 0 || fov >= 180)
+    {
         return 0;
     }
     return 1;
@@ -82,18 +84,15 @@ int validate_unique_element(t_scene *scene, char type)
 
 int is_valid_number(const char *str)
 {
-    int i = 0;
-    int has_digit = 0;
-    int decimal_points = 0;
+    int i;
+    int has_digit;
+    int decimal_points;
 
-    // Handle negative numbers
+    i = 0;
+    has_digit = 0;
+    decimal_points = 0;
     if (str[i] == '-' || str[i] == '+')
         i++;
-
-    // String can't just be a sign
-    if (!str[i])
-        return 0;
-
     while (str[i])
     {
         if (ft_isdigit(str[i]))
@@ -108,6 +107,6 @@ int is_valid_number(const char *str)
             return 0;
         i++;
     }
-    return has_digit;
+    return (i > 0 && has_digit);
 }
 

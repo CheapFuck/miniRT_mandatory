@@ -12,7 +12,7 @@
 
 #include "../../includes/minirt.h"
 
-void	handle_parse_error(char **tokens, const char *error_message)
+void	handle_pars_error(char **tokens, const char *error_message)
 {
 	printf("%s\n", error_message);
 	clean_2d_array(tokens);
@@ -31,7 +31,7 @@ char	**split_and_validate(char *str, int expected_parts)
 		i++;
 	if (i != expected_parts)
 	{
-		handle_parse_error(tokens, "Error: Wrong number of values");
+		handle_pars_error(tokens, "Error: Wrong number of values");
 		return (NULL);
 	}
 	i = 0;
@@ -39,7 +39,7 @@ char	**split_and_validate(char *str, int expected_parts)
 	{
 		if (!tokens[i] || !is_valid_number(tokens[i]))
 		{
-			handle_parse_error(tokens, "Error: Invalid number format");
+			handle_pars_error(tokens, "Error: Invalid number format");
 			return (NULL);
 		}
 		i++;

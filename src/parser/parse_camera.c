@@ -41,7 +41,7 @@ void	parse_camera(char *line, t_scene *scene)
 	scene->camera.orientation.x = ft_atof(orient[0]);
 	scene->camera.orientation.y = ft_atof(orient[1]);
 	scene->camera.orientation.z = ft_atof(orient[2]);
-	if (!validate_normalized_vector(&scene->camera.orientation, "Camera"))
+	if (!validate_nrmlzd_vector(&scene->camera.orientation, "Camera"))
 	{
 		ft_free_split(tokens);
 		ft_free_split(pos);
