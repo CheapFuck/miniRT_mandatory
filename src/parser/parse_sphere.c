@@ -43,9 +43,9 @@ static void	sphere_parse(char **tokens, char **pos, t_sphere sphere,
 
 void	parse_sphere(char *line, t_scene *scene)
 {
-	t_sphere	sphere;
-	char		**tokens;
-	char		**pos;
+	static t_sphere	sphere;
+	char			**tokens;
+	char			**pos;
 
 	tokens = ft_split(line, ' ');
 	if (!tokens || ft_arraylen(tokens) != 4)
