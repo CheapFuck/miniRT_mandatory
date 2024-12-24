@@ -49,6 +49,7 @@ void	ft_hook(void *param)
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 	{
 		mlx_close_window(mlx);
+		mlx_terminate(mlx);
 		exit(EXIT_SUCCESS);
 	}
 }
