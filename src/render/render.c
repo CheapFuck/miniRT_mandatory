@@ -50,29 +50,26 @@ t_vector	scale(t_vector v, double s)
 t_ray	create_ray(int x, int y, t_camera *camera)
 {
 	t_ray		ray;
-	t_vector	forward;
-	t_vector	right;
-	t_vector	up;
-	t_vector	image_point;
 	t_vector	r_vector;
-	double		aspect_ratio;
-	double		fov_scale;
+	t_vector	dir[3];
+	double		aspect_fov_scale;
+	t_vector	image_point;
 
 	r_vector.x = 0;
 	r_vector.y = 1;
 	r_vector.z = 0;
-	forward = normalize(camera->orientation);
-	right = normalize(cross(r_vector, forward));
-	up = cross(forward, right);
-	aspect_ratio = (double)WIDTH / HEIGHT;
-	fov_scale = tan((camera->fov * M_PI / 180) / 2);
-	image_point.x = (2 * (x + 0.5) / WIDTH - 1) * aspect_ratio * fov_scale;
-	image_point.y = (1 - 2 * (y + 0.5) / HEIGHT) * fov_scale;
+	dir[0] = normalize(camera->orientation);
+	dir[1] = normalize(cross(r_vector, dir[0]));
+	dir[2] = cross(dir[0], dir[1]);
+	aspect_fov_scale = tan((camera->fov * M_PI / 180) / 2) * (double)WIDTH
+		/ HEIGHT;
+	image_point.x = (2 * (x + 0.5) / WIDTH - 1) * aspect_fov_scale;
+	image_point.y = (1 - 2 * (y + 0.5) / HEIGHT) * aspect_fov_scale;
 	image_point.z = 1;
 	ray.origin = camera->pos;
-	ray.direction = normalize(add(add(scale(right, image_point.x),
-					scale(up, image_point.y)),
-				scale(forward, image_point.z)));
+	ray.direction = normalize(add(add(scale(dir[1], image_point.x),
+					scale(dir[2], image_point.y)), scale(dir[0],
+					image_point.z)));
 	return (ray);
 }
 
