@@ -68,6 +68,24 @@ typedef struct s_scene
     int has_light;      // Flag for light
 }	t_scene;
 
+
+typedef struct s_disc_params
+{
+    t_disc *disc;
+    double *t;
+    t_color *final_color;
+    t_scene *scene;
+} t_disc_params;
+
+typedef struct s_plane_params
+{
+    t_plane *plane;
+    double *t;
+    t_color *final_color;
+    t_scene *scene;
+} t_plane_params;
+
+
 typedef struct	s_render_data
 {
 	mlx_t		*mlx;
