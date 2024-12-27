@@ -32,7 +32,8 @@ void	render_scene(mlx_t *mlx, t_scene *scene)
 	img = create_image(mlx);
 	data = init_render_data(mlx, scene, img);
 	mlx_image_to_window(mlx, img, 0, 0);
+	mlx_loop_hook(mlx, ft_hook, data);  // Pass `data` to `ft_hook`
 	mlx_loop_hook(mlx, render_next_row, data);
 	mlx_loop(mlx);
-	free(data);
+	free(data);  // This will cover other exit scenarios.
 }

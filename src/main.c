@@ -43,16 +43,18 @@ static void	init_scene(t_scene *scene)
 
 void	ft_hook(void *param)
 {
-	mlx_t	*mlx;
+	t_render_data *data;
 
-	mlx = param;
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
+	data = param;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 	{
-		mlx_close_window(mlx);
-		mlx_terminate(mlx);
+		mlx_close_window(data->mlx);
+		mlx_terminate(data->mlx);
+		free(data);
 		exit(EXIT_SUCCESS);
 	}
 }
+
 
 // Main function
 int	main(int argc, char **argv)
@@ -65,8 +67,8 @@ int	main(int argc, char **argv)
 	mlx = init_mlx();
 	init_scene(&scene);
 	parse_file(argv[1], &scene);
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	// mlx_loop_hook(mlx, ft_hook, mlx);
 	render_scene(mlx, &scene);
-	mlx_loop(mlx);
+	// mlx_loop(mlx);
 	return (0);
 }
