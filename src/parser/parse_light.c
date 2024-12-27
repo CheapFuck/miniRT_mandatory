@@ -74,7 +74,6 @@ int	parse_light_color(char **tokens, t_light *light)
 void	parse_light(char *line, t_scene *scene)
 {
 	char		**tokens;
-	t_light		light;
 
 	validate_unique_element(scene, 'L');
 	tokens = ft_split(line, ' ');
@@ -83,16 +82,20 @@ void	parse_light(char *line, t_scene *scene)
 		ft_free_split(tokens);
 		exit_with_error("Invalid light format");
 	}
-	if (!parse_light_position(tokens, &light))
+	scene->lights[scene->num_lights].pos.x = 0.0;  // Example initialization
+	scene->lights[scene->num_lights].pos.y = 0.0;
+	scene->lights[scene->num_lights].pos.z = 0.0;
+	scene->lights[scene->num_lights].radius = 0.0;  // Example radius value
+	if (!parse_light_position(tokens, &scene->lights[scene->num_lights]))
 		return ;
-	light.brightness = ft_atof(tokens[2]);
-	if (!validate_ratio(light.brightness, "Light brightness"))
+	scene->lights[scene->num_lights].brightness = ft_atof(tokens[2]);
+	if (!validate_ratio(scene->lights[scene->num_lights].brightness,
+			"Light brightness"))
 		return (ft_free_split(tokens));
-	if (!parse_light_color(tokens, &light))
+	if (!parse_light_color(tokens, &scene->lights[scene->num_lights]))
 		return ;
-	if (!validate_color(&light.color))
+	if (!validate_color(&scene->lights[scene->num_lights].color))
 		return (ft_free_split(tokens));
-	scene->lights[scene->num_lights] = light;
 	scene->num_lights++;
 	ft_free_split(tokens);
 }

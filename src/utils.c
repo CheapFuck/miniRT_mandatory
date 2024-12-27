@@ -41,15 +41,38 @@ t_vector	multiply_scalar(t_vector v, double scalar)
 	result.z = v.z * scalar;
 	return (result);
 }
+#include <math.h>  // for sqrt and isnan
 
-t_vector	normalize(t_vector v)
+t_vector normalize(t_vector v)
 {
-	double		length;
-	t_vector	result;
+    double length;
+    t_vector result;
 
-	length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-	result.x = v.x / length;
-	result.y = v.y / length;
-	result.z = v.z / length;
-	return (result);
+    // Check if any component of the vector is NaN or invalid
+    if (isnan(v.x) || isnan(v.y) || isnan(v.z)) {
+        // Handle the invalid case
+        result.x = 0;
+        result.y = 0;
+        result.z = 0;
+        return result;
+    }
+
+    // Calculate the length of the vector
+    length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+
+    // Check for zero-length vector
+    if (length == 0) {
+        // Handle zero-length vector
+        result.x = 0;
+        result.y = 0;
+        result.z = 0;
+        return result;
+    }
+
+    // Proceed with normalization
+    result.x = v.x / length;
+    result.y = v.y / length;
+    result.z = v.z / length;
+
+    return result;
 }
