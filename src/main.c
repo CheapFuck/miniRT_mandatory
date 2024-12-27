@@ -57,18 +57,40 @@ void	ft_hook(void *param)
 
 
 // Main function
-int	main(int argc, char **argv)
-{
-	mlx_t	*mlx;
-	t_scene	scene;
+// int	main(int argc, char **argv)
+// {
+// 	mlx_t	*mlx;
+// 	t_scene	scene;
 
-	if (argc != 2)
-		exit_with_error("Usage: ./miniRT <scene.rt>");
-	mlx = init_mlx();
-	init_scene(&scene);
-	parse_file(argv[1], &scene);
-	// mlx_loop_hook(mlx, ft_hook, mlx);
-	render_scene(mlx, &scene);
-	// mlx_loop(mlx);
-	return (0);
+// 	if (argc != 2)
+// 		exit_with_error("Usage: ./miniRT <scene.rt>");
+// 	mlx = init_mlx();
+// 	init_scene(&scene);
+// 	parse_file(argv[1], &scene);
+// 	// mlx_loop_hook(mlx, ft_hook, mlx);
+// 	render_scene(mlx, &scene);
+// 	// mlx_loop(mlx);
+// 	return (0);
+// }
+
+int main(int argc, char **argv)
+{
+    mlx_t *mlx;
+    t_scene scene;
+
+    if (argc != 2)
+        exit_with_error("Usage: ./miniRT <scene.rt>");
+    
+    mlx = init_mlx();
+    init_scene(&scene);
+    parse_file(argv[1], &scene);
+    
+    render_scene(mlx, &scene);
+
+    // Free allocated memory at the end
+    // free_scene(&scene);  // Make sure to implement this if it frees scene-specific memory
+    mlx_terminate(mlx);   // Free the mlx structure
+    
+    return (0);
 }
+
