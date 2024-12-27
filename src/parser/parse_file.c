@@ -83,6 +83,8 @@ void	parse_file(const char *filename, t_scene *scene)
 
 	open_file(filename, &fd);
 	line = get_next_line_from_file(fd);
+	if (line == NULL)
+		exit_with_error("Error opening file");
 	while (line != NULL)
 	{
 		parse_scene_element(line, scene);
