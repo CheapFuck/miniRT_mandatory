@@ -16,6 +16,7 @@ static void	parse(char *error, char **tokens)
 {
 	printf("%s\n", error);
 	ft_free_split(tokens);
+	exit(EXIT_FAILURE);
 }
 
 void	parse_cylinder(char *line, t_scene *scene)

@@ -16,10 +16,7 @@ int	validate_color(t_color *color)
 	if (color->r < 0 || color->r > 255
 		|| color->g < 0 || color->g > 255
 		|| color->b < 0 || color->b > 255)
-	{
-		printf("Error: Color values must be between 0 and 255\n");
-		return (0);
-	}
+		exit_with_error("Error: Color values must be between 0 and 255");
 	return (1);
 }
 
@@ -31,7 +28,7 @@ int	validate_nrmlzd_vector(t_vector *vector, const char *element_name)
 	{
 		printf("Error: %s vector components must be between -1 and 1\n",
 			element_name);
-		return (0);
+		exit_with_error("");
 	}
 	return (1);
 }
@@ -45,11 +42,11 @@ int	validate_fov(int fov)
 	return (1);
 }
 
-static void	parse_error(char *error)
-{
-	printf("%s\n", error);
-	exit(EXIT_FAILURE);
-}
+// static void	parse_error(char *error)
+// {
+// 	printf("%s\n", error);
+// 	exit(EXIT_FAILURE);
+// }
 
 // Function to track unique elements
 int	validate_unique_element(t_scene *scene, char type)
@@ -57,19 +54,19 @@ int	validate_unique_element(t_scene *scene, char type)
 	if (type == 'A')
 	{
 		if (scene->has_ambient)
-			parse_error("Error: Ambient light (A) can only be declared once");
+			exit_with_error("Error: Ambient light (A) can only be declared once");
 		scene->has_ambient = 1;
 	}
 	else if (type == 'C')
 	{
 		if (scene->has_camera)
-			parse_error("Error: Camera (C) can only be declared once");
+			exit_with_error("Error: Camera (C) can only be declared once");
 		scene->has_camera = 1;
 	}
 	else if (type == 'L')
 	{
 		if (scene->has_light)
-			parse_error("Error: Light (L) can only be declared once");
+			exit_with_error("Error: Light (L) can only be declared once");
 		scene->has_light = 1;
 	}
 	return (1);

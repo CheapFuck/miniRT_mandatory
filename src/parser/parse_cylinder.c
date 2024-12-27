@@ -16,6 +16,7 @@ void	handle_pars_error(char **tokens, const char *error_message)
 {
 	printf("%s\n", error_message);
 	clean_2d_array(tokens);
+	exit(EXIT_FAILURE);
 }
 
 char	**split_and_validate(char *str, int expected_parts)
@@ -55,10 +56,7 @@ int	normalize_orientation(t_cylinder *cylinder)
 			+ pow(cylinder->orientation.y, 2)
 			+ pow(cylinder->orientation.z, 2));
 	if (length == 0.0)
-	{
-		printf("Error: Cylinder orientation vector cannot be zero\n");
-		return (0);
-	}
+		exit_with_error("Error: Cylinder orientation vector cannot be zero");
 	cylinder->orientation.x /= length;
 	cylinder->orientation.y /= length;
 	cylinder->orientation.z /= length;
@@ -73,10 +71,7 @@ int	normalize_orientation_disc(t_disc *disc)
 			+ pow(disc->orientation.y, 2)
 			+ pow(disc->orientation.z, 2));
 	if (length == 0.0)
-	{
-		printf("Error: Cylinder orientation vector cannot be zero\n");
-		return (0);
-	}
+		exit_with_error("Error: Cylinder orientation vector cannot be zero");
 	disc->orientation.x /= length;
 	disc->orientation.y /= length;
 	disc->orientation.z /= length;

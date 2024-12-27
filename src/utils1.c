@@ -14,8 +14,7 @@
 
 void	exit_with_error(const char *msg)
 {
-	if (msg)
-		fprintf(stderr, "Error: %s\n", msg);
+	printf("%s\n", msg);
 	exit(EXIT_FAILURE);
 }
 
