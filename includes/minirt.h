@@ -8,8 +8,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include "scene.h"
 # include "objects.h"
+# include "scene.h"
 # include "parser.h"
 # include "utils.h"
 # include "render.h"
