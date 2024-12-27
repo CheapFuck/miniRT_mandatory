@@ -42,12 +42,6 @@ int	validate_fov(int fov)
 	return (1);
 }
 
-// static void	parse_error(char *error)
-// {
-// 	printf("%s\n", error);
-// 	exit(EXIT_FAILURE);
-// }
-
 // Function to track unique elements
 int	validate_unique_element(t_scene *scene, char type)
 {

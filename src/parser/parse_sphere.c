@@ -65,7 +65,7 @@ void	parse_sphere(char *line, t_scene *scene)
 		printf("Error: Sphere diameter must be positive\n");
 		ft_free_split(tokens);
 		ft_free_split(pos);
-		return ;
+		exit(EXIT_FAILURE);
 	}
 	sphere_parse(tokens, pos, sphere, scene);
 }
