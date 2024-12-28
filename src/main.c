@@ -20,15 +20,15 @@ static void	close_window(mlx_t *mlx)
 }
 
 // Initialize MLX42
-static mlx_t	*init_mlx(void)
-{
-	mlx_t	*mlx;
+// static mlx_t	*init_mlx(void)
+// {
+// 	mlx_t	*mlx;
 
-	mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
-	if (!mlx)
-		exit_with_error("Error initializing MLX42");
-	return (mlx);
-}
+// 	mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
+// 	if (!mlx)
+// 		exit_with_error("Error initializing MLX42");
+// 	return (mlx);
+// }
 
 // Initialize scene structure
 static void	init_scene(t_scene *scene)
@@ -79,7 +79,9 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		exit_with_error("Usage: ./miniRT <scene.rt>");
-	mlx = init_mlx();
+	mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
+	if (!mlx)
+		exit_with_error("Error initializing MLX42");
 	init_scene(&scene);
 	parse_file(argv[1], &scene);
 	render_scene(mlx, &scene);

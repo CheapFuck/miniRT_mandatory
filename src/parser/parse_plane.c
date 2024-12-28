@@ -91,6 +91,7 @@ void	parse_plane(char *line, t_scene *scene)
 		return (ft_free_split(tokens));
 	if (scene->num_planes >= 65536)
 		handle_plane_parse_error(tokens, NULL, "Plane array is full");
+    printf("numplanes: %i\n", scene->num_planes);
 	scene->planes[scene->num_planes] = plane;
 	scene->num_planes++;
 	ft_free_split(tokens);
