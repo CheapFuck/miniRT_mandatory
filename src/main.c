@@ -12,11 +12,13 @@
 
 #include "../includes/minirt.h"
 
-// static void close_window(mlx_t *mlx)
-// {
-//     if (mlx) mlx_terminate(mlx);
-//     exit(0);
-// }
+static void	close_window(mlx_t *mlx)
+{
+	if (mlx)
+		mlx_terminate(mlx);
+	exit(0);
+}
+
 // Initialize MLX42
 static mlx_t	*init_mlx(void)
 {
@@ -43,7 +45,7 @@ static void	init_scene(t_scene *scene)
 
 void	ft_hook(void *param)
 {
-	t_render_data *data;
+	t_render_data	*data;
 
 	data = param;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
@@ -54,14 +56,11 @@ void	ft_hook(void *param)
 		exit(EXIT_SUCCESS);
 	}
 }
-
-
 // Main function
 // int	main(int argc, char **argv)
 // {
 // 	mlx_t	*mlx;
 // 	t_scene	scene;
-
 // 	if (argc != 2)
 // 		exit_with_error("Usage: ./miniRT <scene.rt>");
 // 	mlx = init_mlx();
@@ -73,24 +72,17 @@ void	ft_hook(void *param)
 // 	return (0);
 // }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    mlx_t *mlx;
-    t_scene scene;
+	mlx_t	*mlx;
+	t_scene	scene;
 
-    if (argc != 2)
-        exit_with_error("Usage: ./miniRT <scene.rt>");
-    
-    mlx = init_mlx();
-    init_scene(&scene);
-    parse_file(argv[1], &scene);
-    
-    render_scene(mlx, &scene);
-
-    // Free allocated memory at the end
-    // free_scene(&scene);  // Make sure to implement this if it frees scene-specific memory
-    mlx_terminate(mlx);   // Free the mlx structure
-    
-    return (0);
+	if (argc != 2)
+		exit_with_error("Usage: ./miniRT <scene.rt>");
+	mlx = init_mlx();
+	init_scene(&scene);
+	parse_file(argv[1], &scene);
+	render_scene(mlx, &scene);
+	close_window(mlx);
+	return (0);
 }
-
