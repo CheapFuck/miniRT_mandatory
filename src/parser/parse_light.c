@@ -82,10 +82,10 @@ void	parse_light(char *line, t_scene *scene)
 		ft_free_split(tokens);
 		exit_with_error("Invalid light format");
 	}
-	scene->lights[scene->num_lights].pos.x = 0.0;  // Example initialization
+	scene->lights[scene->num_lights].pos.x = 0.0;
 	scene->lights[scene->num_lights].pos.y = 0.0;
 	scene->lights[scene->num_lights].pos.z = 0.0;
-	scene->lights[scene->num_lights].radius = 0.0;  // Example radius value
+	scene->lights[scene->num_lights].radius = 0.0;
 	if (!parse_light_position(tokens, &scene->lights[scene->num_lights]))
 		return ;
 	scene->lights[scene->num_lights].brightness = ft_atof(tokens[2]);

@@ -48,7 +48,7 @@ int	validate_unique_element(t_scene *scene, char type)
 	if (type == 'A')
 	{
 		if (scene->has_ambient)
-			exit_with_error("Error: Ambient light (A) can only be declared once");
+			exit_with_error("Error: Ambient (A) can only be declared once");
 		scene->has_ambient = 1;
 	}
 	else if (type == 'C')

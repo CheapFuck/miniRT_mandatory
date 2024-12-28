@@ -68,7 +68,7 @@ int	intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double *t)
 	return (hit);
 }
 
-int intersect_disc(t_ray *ray, t_disc *disc, double *t)
+int	intersect_disc(t_ray *ray, t_disc *disc, double *t)
 {
     t_vector oc;             // Vector from ray origin to disc center
     double denom;            // Dot product of ray direction and disc normal
