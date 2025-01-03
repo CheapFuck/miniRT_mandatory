@@ -20,18 +20,36 @@ int	validate_color(t_color *color)
 	return (1);
 }
 
-int	validate_nrmlzd_vector(t_vector *vector, const char *element_name)
+int	validate_nrmlzd_vector(t_vector *vec, char *context)
 {
-	if (vector->x < -1.0 || vector->x > 1.0
-		|| vector->y < -1.0 || vector->y > 1.0
-		|| vector->z < -1.0 || vector->z > 1.0)
-	{
-		printf("Error: %s vector components must be between -1 and 1\n",
-			element_name);
-		exit_with_error("");
-	}
-	return (1);
+    float length = sqrt(vec->x * vec->x + vec->y * vec->y + vec->z * vec->z);
+    if (length > 0)
+    {
+        vec->x /= length;
+        vec->y /= length;
+        vec->z /= length;
+    }
+    if (fabs(length - 1.0) > 1e-6)
+    {
+        printf("%s orientation vector is not normalized! Length: %f\n", context, length);
+        return 0;
+    }
+    return 1;
 }
+
+
+// int	validate_nrmlzd_vector(t_vector *vector, const char *element_name)
+// {
+// 	if (vector->x < -1.0 || vector->x > 1.0
+// 		|| vector->y < -1.0 || vector->y > 1.0
+// 		|| vector->z < -1.0 || vector->z > 1.0)
+// 	{
+// 		printf("Error: %s vector components must be between -1 and 1\n",
+// 			element_name);
+// 		exit_with_error("");
+// 	}
+// 	return (1);
+// }
 
 int	validate_fov(int fov)
 {

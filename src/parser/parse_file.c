@@ -12,29 +12,55 @@
 
 #include "../../includes/minirt.h"
 
-char	*read_line(int fd)
+static int	fill_buffer(int fd, char *buffer)
 {
-	char	*buffer;
 	int		i;
 	char	c;
+	int		read_result;
 
-	buffer = malloc(10000);
-	if (!buffer)
-		return (NULL);
 	i = 0;
-	while (read(fd, &c, 1) > 0)
+	read_result = read(fd, &c, 1);
+	while (read_result > 0)
 	{
-		if (c == '\n' || c == '\0')
+		if (c == '\n')
 			break ;
 		buffer[i++] = c;
+		read_result = read(fd, &c, 1);
 	}
 	buffer[i] = '\0';
-	if (i == 0)
+	if (read_result < 0)
+		return (-1);
+	if (read_result == 0 && i == 0)
+		return (0);
+	return (1);
+}
+
+static char	*handle_read_result(char *buffer, int result)
+{
+	if (result < 0 || result == 0)
 	{
 		free(buffer);
 		return (NULL);
 	}
 	return (buffer);
+}
+
+char	*read_line(int fd)
+{
+	char	*buffer;
+	int		result;
+
+	buffer = malloc(10000);
+	if (!buffer)
+		return (NULL);
+	while (1)
+	{
+		result = fill_buffer(fd, buffer);
+		if (result != 1)
+			return (handle_read_result(buffer, result));
+		if (buffer[0] != '\0')
+			return (buffer);
+	}
 }
 
 void	open_file(const char *filename, int *fd)
@@ -94,3 +120,17 @@ void	parse_file(const char *filename, t_scene *scene)
 	free(line);
 	close(fd);
 }
+
+// void	parse_file(const char *filename, t_scene *scene)
+// {
+// 	int		fd;
+// 	char	*line;
+
+// 	open_file(filename, &fd);
+// 	while ((line = get_next_line_from_file(fd)) != NULL)
+// 	{
+// 		parse_scene_element(line, scene);
+// 		free(line);
+// 	}
+// 	close(fd);
+// }

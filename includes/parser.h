@@ -34,7 +34,9 @@ void		exit_with_error(const char *msg);
 
 int			validate_ratio(double value, const char *element_name);
 int			validate_color(t_color *color);
-int			validate_nrmlzd_vector(t_vector *vector, const char *element_name);
+int	validate_nrmlzd_vector(t_vector *vec, char *context);
+
+// int			validate_nrmlzd_vector(t_vector *vector, const char *element_name);
 int			validate_fov(int fov);
 int			validate_unique_element(t_scene *scene, char type);
 int			is_valid_number(const char *str);
