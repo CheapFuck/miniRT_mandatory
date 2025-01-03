@@ -88,10 +88,3 @@ int	main(int argc, char **argv)
 	close_window(mlx);
 	return (0);
 }
-
-
-
-
-
-
-

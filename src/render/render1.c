@@ -170,6 +170,7 @@ void	render_next_row(void *param)
 	if (data->current_row >= HEIGHT)
 	{
 		data->render_complete = true;
+		//we could keep it like this, or change to this
 		// printf("Rendering complete!\n");
 		// mlx_terminate(data->mlx);
 		// free(data);
