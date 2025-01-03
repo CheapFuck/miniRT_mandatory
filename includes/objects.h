@@ -3,13 +3,6 @@
 
 # include "minirt.h"
 
-typedef struct s_vec3
-{
-    double x;
-    double y;
-    double z;
-} t_vec3;
-
 typedef struct s_vector
 {
 	double	x;
