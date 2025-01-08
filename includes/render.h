@@ -28,6 +28,8 @@ t_ray			generate_shadow_ray(t_vector hit_point, t_light light);
 double			compute_distance(t_vector a, t_vector b);
 int				is_in_shadow(t_ray *shadow_ray, t_scene *scene,
 					double light_distance);
+// int				is_in_shadow(t_ray shadow_ray, t_scene *scene,
+// 					double light_distance);
 t_ray			create_ray(int x, int y, t_camera *camera);
 t_vector		world_to_local(t_vector point, t_vector orientation,
 					t_vector center);

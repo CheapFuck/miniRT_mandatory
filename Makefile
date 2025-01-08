@@ -1,7 +1,8 @@
 NAME = miniRT
 CC = cc
+CFLAGS 	     = -Ofast -Wall -Wextra -Wextra -pedantic -I./includes -I./MLX42/include -I./MLX/include/lodepng/lodepng.h
 # CFLAGS = -Wall -Wextra -Werror -Ofast -I./includes -I./MLX42/include
-CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
+# CFLAGS = -Wall -Wextra -Werror -g3 -I./includes -I./MLX42/include
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
 # --suppressions="mlx42.supp" 
 # MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -lm

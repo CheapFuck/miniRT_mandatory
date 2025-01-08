@@ -59,21 +59,84 @@ double	compute_distance(t_vector a, t_vector b)
 	return (sqrt(dot(diff, diff)));
 }
 
+static int	intersect_sphere_helper(t_scene *scene, t_ray *shadow_ray,
+	double t_shadow, double light_distance)
+{
+	int	i;
+
+	i = 0;
+	while (i < scene->num_spheres)
+	{
+		if (intersect_sphere(shadow_ray, &scene->spheres[i], &t_shadow)
+			&& t_shadow < light_distance)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	intersect_cylinder_helper(t_scene *scene, t_ray *shadow_ray,
+	double t_shadow, double light_distance)
+{
+	int	i;
+
+	i = 0;
+	while (i < scene->num_cylinders)
+	{
+		if (intersect_cylinder(shadow_ray, &scene->cylinders[i], &t_shadow)
+			&& t_shadow < light_distance)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	intersect_plane_helper(t_scene *scene, t_ray *shadow_ray,
+	double t_shadow, double light_distance)
+{
+	int	i;
+
+	i = 0;
+	while (i < scene->num_cylinders)
+	{
+		if (intersect_plane(shadow_ray, &scene->planes[i], &t_shadow)
+			&& t_shadow < light_distance)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	intersect_disc_helper(t_scene *scene, t_ray *shadow_ray,
+	double t_shadow, double light_distance)
+{
+	int	i;
+
+	i = 0;
+	while (i < scene->num_discs)
+	{
+		if (intersect_disc(shadow_ray, &scene->discs[i], &t_shadow)
+			&& t_shadow < light_distance)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 // Check if a shadow ray intersects any objects in the scene
 int	is_in_shadow(t_ray *shadow_ray, t_scene *scene,
 	double light_distance)
 {
-	int			j;
 	double		t_shadow;
 
-	j = 0;
-	while (j < scene->num_spheres)
-	{
-		t_shadow = INFINITY;
-		if (intersect_sphere(shadow_ray, &scene->spheres[j], &t_shadow)
-			&& t_shadow < light_distance)
-			return (1);
-		j++;
-	}
+	t_shadow = 0.0;
+	if (intersect_sphere_helper(scene, shadow_ray, t_shadow, light_distance))
+		return (1);
+	if (intersect_cylinder_helper(scene, shadow_ray, t_shadow, light_distance))
+		return (1);
+	if (intersect_plane_helper(scene, shadow_ray, t_shadow, light_distance))
+		return (1);
+	if (intersect_disc_helper(scene, shadow_ray, t_shadow, light_distance))
+		return (1);
 	return (0);
 }
