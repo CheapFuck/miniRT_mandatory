@@ -42,7 +42,7 @@ int	intersect_plane(t_ray *ray, t_plane *plane, double *t)
 	double		t_temp;
 
 	denom = dot(plane->normal, ray->direction);
-	if (fabs(denom) < EPSILON)
+	if (fabs(denom) < 1e-6)
 		return (0);
 	p0_to_origin = subtract(plane->point, ray->origin);
 	t_temp = dot(p0_to_origin, plane->normal) / denom;

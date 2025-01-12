@@ -12,8 +12,6 @@
 
 #include "../../includes/minirt.h"
 
-#define EPSILON 1e-6
-
 // Step 2: Solve quadratic equation and check discriminant
 static int	solve_quadratic(double *components, double *t1, double *t2)
 {
@@ -70,31 +68,23 @@ int	intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double *t)
 
 int	intersect_disc(t_ray *ray, t_disc *disc, double *t)
 {
-    t_vector oc;             // Vector from ray origin to disc center
-    double denom;            // Dot product of ray direction and disc normal
-    double t_plane;          // Distance to intersection point on plane
-    t_vector p;              // Intersection point
-    double distance_squared; // Squared distance from center to intersection point
+	t_vector	oc;
+	double		denom;
+	double		t_plane;
+	t_vector	p;
+	double		distance_squared;
 
-    // Step 1: Calculate the denominator (ray direction · disc normal)
-    denom = dot(ray->direction, disc->normal);
-    if (fabs(denom) < 1e-6) // Avoid division by near-zero; ray is parallel to disc
-        return (0);
-
-    // Step 2: Find intersection distance to the plane containing the disc
-    oc = subtract(disc->center, ray->origin); // Vector from ray origin to disc center
-    t_plane = dot(oc, disc->normal) / denom;
-
-    if (t_plane <= 0) // Intersection is behind the ray's origin
-        return (0);
-
-    // Step 3: Check if the intersection point is within the disc's radius
-    p = add(ray->origin, scale(ray->direction, t_plane)); // Intersection point
-    distance_squared = length_squared(subtract(p, disc->center));
-    if (distance_squared > disc->radius * disc->radius)
-        return (0); // Intersection is outside the disc
-
-    // Valid intersection
-    *t = t_plane;
-    return (1);
+	denom = dot(ray->direction, disc->normal);
+	if (fabs(denom) < 1e-6)
+		return (0);
+	oc = subtract(disc->center, ray->origin);
+	t_plane = dot(oc, disc->normal) / denom;
+	if (t_plane <= 0)
+		return (0);
+	p = add(ray->origin, scale(ray->direction, t_plane));
+	distance_squared = length_squared(subtract(p, disc->center));
+	if (distance_squared > disc->radius * disc->radius)
+		return (0);
+	*t = t_plane;
+	return (1);
 }
