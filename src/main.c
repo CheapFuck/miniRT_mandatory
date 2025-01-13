@@ -56,27 +56,13 @@ void	ft_hook(void *param)
 		exit(EXIT_SUCCESS);
 	}
 }
-// Main function
-// int	main(int argc, char **argv)
-// {
-// 	mlx_t	*mlx;
-// 	t_scene	scene;
-// 	if (argc != 2)
-// 		exit_with_error("Usage: ./miniRT <scene.rt>");
-// 	mlx = init_mlx();
-// 	init_scene(&scene);
-// 	parse_file(argv[1], &scene);
-// 	// mlx_loop_hook(mlx, ft_hook, mlx);
-// 	render_scene(mlx, &scene);
-// 	// mlx_loop(mlx);
-// 	return (0);
-// }
 
 int	main(int argc, char **argv)
 {
 	mlx_t	*mlx;
 	t_scene	scene;
 
+	scene = (t_scene){0};
 	if (argc != 2)
 		exit_with_error("Usage: ./miniRT <scene.rt>");
 	mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);

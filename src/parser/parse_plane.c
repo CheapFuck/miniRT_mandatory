@@ -69,11 +69,19 @@ int	parse_plane_color(char *token, t_color *color, char **tokens)
 	return (1);
 }
 
+static void	init_plane(t_plane *plane)
+{
+	plane->point = (t_vector){0, 0, 0,};
+	plane->normal = (t_vector){0, 0, 0,};
+	plane->color = (t_color){0, 0, 0,};
+}
+
 void	parse_plane(char *line, t_scene *scene)
 {
 	char	**tokens;
 	t_plane	plane;
 
+	init_plane(&plane);
 	tokens = ft_split(line, ' ');
 	if (!tokens || ft_arraylen(tokens) != 4)
 		handle_plane_parse_error(tokens, NULL, "Invalid plane format");
@@ -93,5 +101,5 @@ void	parse_plane(char *line, t_scene *scene)
 		handle_plane_parse_error(tokens, NULL, "Plane array is full");
 	scene->planes[scene->num_planes] = plane;
 	scene->num_planes++;
-	ft_free_split(tokens);
+	ft_free_split (tokens);
 }

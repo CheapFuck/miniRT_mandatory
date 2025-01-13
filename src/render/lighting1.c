@@ -73,6 +73,7 @@ t_color	apply_lighting(t_vector hit_point, t_vector normal,
 	t_color		light_contribution;
 	t_color		current_contribution;
 
+	light_contribution = (t_color){0,0,0};
 	light_contribution = compute_ambient_light(scene->ambient.color,
 			scene->ambient.ratio);
 	i = 0;
