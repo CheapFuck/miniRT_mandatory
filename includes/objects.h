@@ -37,10 +37,13 @@ typedef struct s_sphere
 	int			checker;
 	double		shininess; //moet dit?
 	t_vector	oc;
-	double		a, b, c;
-	double		discriminant, sqrt_discriminant;
-	double		t1, t2;
-
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
+	double		sqrt_discriminant;
+	double		t1;
+	double		t2;
 }	t_sphere;
 
 #endif // OBJECTS_H
