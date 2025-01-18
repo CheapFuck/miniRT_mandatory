@@ -19,18 +19,6 @@ static void	close_window(mlx_t *mlx)
 	exit(0);
 }
 
-// Initialize MLX42
-// static mlx_t	*init_mlx(void)
-// {
-// 	mlx_t	*mlx;
-
-// 	mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
-// 	if (!mlx)
-// 		exit_with_error("Error initializing MLX42");
-// 	return (mlx);
-// }
-
-// Initialize scene structure
 static void	init_scene(t_scene *scene)
 {
 	scene->num_spheres = 0;

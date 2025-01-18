@@ -135,9 +135,3 @@ int	parse_color(char *color_str, t_color *color)
 	clean_2d_array(color_tokens);
 	return (1);
 }
-
-// i wonder if it is possible like this (cleaning the 2d array from
-//  handle_parse_error() i think so but still need to check :-)
-//  functions are in norminette limits but number of functions
-//  per file need to be maximum 5, so some functions have to be
-//  moved to other files, if you get what i'm sayin' right 8)
