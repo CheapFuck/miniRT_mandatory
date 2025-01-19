@@ -4,6 +4,7 @@ CFLAGS = -Ofast -flto -Wall -Wextra -Wextra -I./includes
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
 # --suppressions="mlx42.supp" 
 LIBFTDIR 		:=	libft/
+MLX_DIR = MLX42
 LIBMLX	:= ./MLX42
 INCLUDE			:=	-L libft -lft
 
@@ -37,8 +38,11 @@ all: libmlx $(NAME)
 
 
 libmlx:
-	@git clone https://github.com/codam-coding-college/MLX42.git
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j48
+	@if [ ! -d "$(MLX_DIR)" ]; then \
+		git clone https://github.com/codam-coding-college/MLX42.git; \
+	fi
+	cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build
+
 
 $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFTDIR)
