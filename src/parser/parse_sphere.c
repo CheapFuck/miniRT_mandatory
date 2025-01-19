@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_sphere.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/09 15:47:19 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/20 13:08:08 by thivan-d      ########   odam.nl         */
+/*   Created: 2025/01/19 14:08:33 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:08:34 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,32 @@ void	parse_sphere(char *line, t_scene *scene)
 		exit(EXIT_FAILURE);
 	}
 	sphere_parse(tokens, pos, sphere, scene);
+}
+
+int	is_valid_number(const char *str)
+{
+	int	i;
+	int	has_digit;
+	int	decimal_points;
+
+	i = 0;
+	has_digit = 0;
+	decimal_points = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]))
+			has_digit = 1;
+		else if (str[i] == '.')
+		{
+			decimal_points++;
+			if (decimal_points > 1)
+				return (0);
+		}
+		else
+			return (0);
+		i++;
+	}
+	return (i > 0 && has_digit);
 }

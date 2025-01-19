@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parser_utils.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/01/19 14:08:36 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:08:38 by thivan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minirt.h"
 
-// Validation functions for different types of inputs
 int	validate_ratio(double value, const char *element_name)
 {
 	if (value < 0.0 || value > 1.0)
@@ -69,32 +80,4 @@ int	validate_unique_element(t_scene *scene, char type)
 		scene->has_light = 1;
 	}
 	return (1);
-}
-
-int	is_valid_number(const char *str)
-{
-	int	i;
-	int	has_digit;
-	int	decimal_points;
-
-	i = 0;
-	has_digit = 0;
-	decimal_points = 0;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i])
-	{
-		if (ft_isdigit(str[i]))
-			has_digit = 1;
-		else if (str[i] == '.')
-		{
-			decimal_points++;
-			if (decimal_points > 1)
-				return (0);
-		}
-		else
-			return (0);
-		i++;
-	}
-	return (i > 0 && has_digit);
 }

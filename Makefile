@@ -9,21 +9,25 @@ INCLUDE			:=	-L libft -lft
 
 
 SRC = src/main.c \
-      src/render/render.c \
 	  src/render/render1.c \
 	  src/render/render2.c \
-      src/render/intersection.c \
+   	  src/render/render3.c \
+	  src/render/render4.c \
 	  src/render/intersection1.c \
-      src/render/lighting.c \
-	  src/render/lighting1.c \
-      src/utils.c \
-	  src/utils1.c \
+	  src/render/intersection2.c \
+      src/render/lighting1.c \
+	  src/render/lighting2.c \
+  	  src/render/lighting3.c \
+      src/utils1.c \
+	  src/utils2.c \
 	  src/parser/parse_camera.c \
-	  src/parser/parse_file.c \
+	  src/parser/parse_file1.c \
+  	  src/parser/parse_file2.c \
 	  src/parser/parse_light.c \
-  	  src/parser/parse_plane.c \
-	  src/parser/parse_cylinder.c \
+  	  src/parser/parse_plane1.c \
+   	  src/parser/parse_plane2.c \
 	  src/parser/parse_cylinder1.c \
+	  src/parser/parse_cylinder2.c \
   	  src/parser/parse_sphere.c \
 	  src/parser/parser_utils.c \
 	  
@@ -33,6 +37,7 @@ all: libmlx $(NAME)
 
 
 libmlx:
+	@git clone https://github.com/codam-coding-college/MLX42.git
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j48
 
 $(NAME): $(OBJ)
@@ -46,5 +51,6 @@ clean:
 
 fclean: clean
 	rm -rf miniRT
+	rm -rf MLX42/
 
 re: fclean all

@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/09 15:56:19 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/09 15:56:20 by diwang        ########   odam.nl         */
+/*   Created: 2025/01/19 14:09:14 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:09:15 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ void	ft_hook(void *param)
 		free(data);
 		exit(EXIT_SUCCESS);
 	}
+}
+
+void	handle_pars_error(char **tokens, const char *error_message)
+{
+	printf("%s\n", error_message);
+	clean_2d_array(tokens);
+	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv)

@@ -3,27 +3,67 @@
 /*                                                        ::::::::            */
 /*   utils1.c                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/09 15:45:15 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/09 16:01:56 by diwang        ########   odam.nl         */
+/*   Created: 2025/01/19 14:09:47 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:09:48 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 
-void	exit_with_error(const char *msg)
+t_vector	add(t_vector a, t_vector b)
 {
-	printf("%s\n", msg);
-	exit(EXIT_FAILURE);
+	t_vector	result;
+
+	result.x = a.x + b.x;
+	result.y = a.y + b.y;
+	result.z = a.z + b.z;
+	return (result);
 }
 
-double	dot(t_vector a, t_vector b)
+t_vector	subtract(t_vector a, t_vector b)
 {
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
+	t_vector	result;
+
+	result.x = a.x - b.x;
+	result.y = a.y - b.y;
+	result.z = a.z - b.z;
+	return (result);
 }
 
-double	length_squared(t_vector v)
+t_vector	multiply_scalar(t_vector v, double scalar)
 {
-	return (v.x * v.x + v.y * v.y + v.z * v.z);
+	t_vector	result;
+
+	result.x = v.x * scalar;
+	result.y = v.y * scalar;
+	result.z = v.z * scalar;
+	return (result);
+}
+
+t_vector	normalize(t_vector v)
+{
+	double		length;
+	t_vector	result;
+
+	if (isnan(v.x) || isnan(v.y) || isnan(v.z))
+	{
+		result.x = 0;
+		result.y = 0;
+		result.z = 0;
+		return (result);
+	}
+	length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (length == 0)
+	{
+		result.x = 0;
+		result.y = 0;
+		result.z = 0;
+		return (result);
+	}
+	result.x = v.x / length;
+	result.y = v.y / length;
+	result.z = v.z / length;
+	return (result);
 }

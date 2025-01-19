@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_cylinder1.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/09 15:59:46 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/20 13:09:54 by thivan-d      ########   odam.nl         */
+/*   Created: 2025/01/19 14:08:08 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:08:11 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,18 @@ void	parse_discs(char *line, t_scene *scene)
 		return (handle_pars_error(tokens, "Error: Invalid disc color format"));
 	disc_parse(scene, disc, tokens);
 	ft_free_split(tokens);
+}
+
+int	parse_color(char *color_str, t_color *color)
+{
+	char	**color_tokens;
+
+	color_tokens = split_and_validate(color_str, 3);
+	if (!color_tokens)
+		return (0);
+	color->r = ft_atoi(color_tokens[0]);
+	color->g = ft_atoi(color_tokens[1]);
+	color->b = ft_atoi(color_tokens[2]);
+	clean_2d_array(color_tokens);
+	return (1);
 }

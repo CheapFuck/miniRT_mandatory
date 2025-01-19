@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   render.h                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2025/01/19 14:10:49 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:11:18 by thivan-d      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RENDER_H
 # define RENDER_H
 
@@ -30,5 +42,24 @@ void			parse_discs(char *line, t_scene *scene);
 int				parse_disc_properties(char **tokens, t_disc *disc);
 t_vector		cross(t_vector a, t_vector b);
 void			ft_hook(void *param);
+int				intersect_disc_helper(t_scene *scene, t_ray *shadow_ray,
+					double t_shadow, double light_distance);
+int				intersect_plane_helper(t_scene *scene, t_ray *shadow_ray,
+					double t_shadow, double light_distance);
+int				intersect_cylinder_helper(t_scene *scene, t_ray *shadow_ray,
+					double t_shadow, double light_distance);
+void			open_file(const char *filename, int *fd);
+int				intersect_sphere_helper(t_scene *scene, t_ray *shadow_ray,
+					double t_shadow, double light_distance);
+char			*get_next_line_from_file(int fd);
+int				parse_plane_tokens(char *token, t_vector *vector);
+int				handle_cylinders(t_ray *ray, t_scene *scene, double *t,
+					t_color *final_color);
+int				handle_single_plane(t_ray *ray, t_plane_params *params);
+int				handle_planes(t_ray *ray, t_scene *scene, double *t,
+					t_color *final_color);
+int				handle_single_disc(t_ray *ray, t_disc_params *params);
+int				handle_discs(t_ray *ray, t_scene *scene, double *t,
+					t_color *final_color);
 
 #endif // RENDER_H

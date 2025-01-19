@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_light.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/09 15:47:07 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/20 13:07:17 by thivan-d      ########   odam.nl         */
+/*   Created: 2025/01/19 14:08:23 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:08:24 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

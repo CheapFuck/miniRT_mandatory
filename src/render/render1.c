@@ -3,199 +3,67 @@
 /*                                                        ::::::::            */
 /*   render1.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: diwang <diwang@student.codam.nl>             +#+                     */
+/*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/12/09 15:40:15 by diwang        #+#    #+#                 */
-/*   Updated: 2024/12/09 16:03:52 by diwang        ########   odam.nl         */
+/*   Created: 2025/01/19 14:08:58 by thivan-d      #+#    #+#                 */
+/*   Updated: 2025/01/19 14:08:59 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// Handle cylinder intersections and update color
-static int	handle_cylinders(t_ray *ray, t_scene *scene, double *t,
-					t_color *final_color)
+int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
-	int			i;
-	int			hit;
-	double		t_cylinder;
-	t_vector	hit_point;
-	t_vector	normal;
-
-	hit = 0;
-	i = 0;
-	while (i < scene->num_cylinders)
-	{
-		t_cylinder = *t;
-		if (intersect_cylinder(ray, &scene->cylinders[i], &t_cylinder)
-			&& t_cylinder < *t)
-		{
-			*t = t_cylinder;
-			hit_point = add(ray->origin, multiply_scalar(ray->direction, *t));
-			normal = normalize(subtract(hit_point, scene->cylinders[i].center));
-			*final_color = apply_lighting(hit_point, normal,
-					scene->cylinders[i].color, scene);
-			hit = 1;
-		}
-		i++;
-	}
-	return (hit);
+	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-static int	handle_single_plane(t_ray *ray, t_plane_params *params)
+double	vector_length(t_vector v)
 {
-	double		t_plane;
-	t_vector	hit_point;
-	t_vector	normal;
-
-	t_plane = *params->t;
-	if (intersect_plane(ray, params->plane, &t_plane) && t_plane < *params->t)
-	{
-		*params->t = t_plane;
-		hit_point = add(ray->origin, multiply_scalar(ray->direction,
-					*params->t));
-		normal = params->plane->normal;
-		if (dot(ray->direction, normal) > 0)
-			normal = multiply_scalar(normal, -1);
-		*params->final_color = apply_lighting(hit_point, normal,
-				params->plane->color, params->scene);
-		return (1);
-	}
-	return (0);
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-// Update handle_planes to use the new structure
-static int	handle_planes(t_ray *ray, t_scene *scene, double *t,
-		t_color *final_color)
+t_vector	scale(t_vector v, double s)
 {
-	int				i;
-	int				hit;
-	t_plane_params	params;
+	t_vector	result;
 
-	hit = 0;
-	i = 0;
-	while (i < scene->num_planes)
-	{
-		params.plane = &scene->planes[i];
-		params.t = t;
-		params.final_color = final_color;
-		params.scene = scene;
-		if (handle_single_plane(ray, &params))
-			hit = 1;
-		i++;
-	}
-	return (hit);
+	result.x = v.x * s;
+	result.y = v.y * s;
+	result.z = v.z * s;
+	return (result);
 }
 
-static int	handle_single_disc(t_ray *ray, t_disc_params *params)
+t_ray	create_ray(int x, int y, t_camera *camera)
 {
-	double		t_disc;
-	t_vector	hit_point;
-	t_vector	normal;
-	t_color		gradient;
+	t_ray		ray;
+	t_vector	r_vector;
+	t_vector	dir[3];
+	double		aspect_fov_scale;
+	t_vector	image_point;
 
-	t_disc = *params->t;
-	if (intersect_disc(ray, params->disc, &t_disc) && t_disc < *params->t)
-	{
-		*params->t = t_disc;
-		hit_point = add(ray->origin, multiply_scalar(ray->direction,
-					*params->t));
-		normal = normalize(subtract(hit_point, params->disc->center));
-		gradient = apply_lighting(hit_point, normal, params->disc->color,
-				params->scene);
-		*params->final_color = combine_color(apply_lighting(hit_point,
-					params->disc->normal, params->disc->color, params->scene),
-				gradient);
-		return (1);
-	}
-	return (0);
+	r_vector.x = 0;
+	r_vector.y = 1;
+	r_vector.z = 0;
+	dir[0] = normalize(camera->orientation);
+	dir[1] = normalize(cross(r_vector, dir[0]));
+	dir[2] = cross(dir[0], dir[1]);
+	aspect_fov_scale = tan((camera->fov * M_PI / 180) / 2) * (double)WIDTH
+		/ HEIGHT;
+	image_point.x = (2 * (x + 0.5) / WIDTH - 1) * aspect_fov_scale;
+	image_point.y = (1 - 2 * (y + 0.5) / HEIGHT) * aspect_fov_scale;
+	image_point.z = 1;
+	ray.origin = camera->pos;
+	ray.direction = normalize(add(add(scale(dir[1], image_point.x),
+					scale(dir[2], image_point.y)), scale(dir[0],
+					image_point.z)));
+	return (ray);
 }
 
-// Update handle_discs to use the new structure
-static int	handle_discs(t_ray *ray, t_scene *scene, double *t,
-	t_color *final_color)
+t_vector	cross(t_vector a, t_vector b)
 {
-	int				hit;
-	int				i;
-	t_disc_params	params;
+	t_vector	result;
 
-	hit = 0;
-	i = 0;
-	while (i < scene->num_discs)
-	{
-		params.disc = &scene->discs[i];
-		params.t = t;
-		params.final_color = final_color;
-		params.scene = scene;
-		if (handle_single_disc(ray, &params))
-			hit = 1;
-		i++;
-	}
-	return (hit);
-}
-
-// Trace ray and determine pixel color
-static uint32_t	trace_ray(t_ray ray, t_scene *scene)
-{
-	double		t;
-	t_color		final_color;
-	int			hit;
-
-	t = INFINITY;
-	hit = 0;
-	final_color = (t_color){0, 0, 0};
-	if (handle_spheres(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (handle_cylinders(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (handle_planes(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (handle_discs(&ray, scene, &t, &final_color))
-		hit = 1;
-	if (hit)
-		return ((final_color.r << 24) | (final_color.g << 16)
-			| (final_color.b << 8) | 0xFF);
-	return (0x000000FF);
-}
-
-// Main function for rendering the next row
-void	render_next_row(void *param)
-{
-	t_render_data	*data;
-	int				x;
-	t_ray			ray;
-	uint32_t		color;
-
-	data = (t_render_data *)param;
-	if (data->current_row >= HEIGHT)
-	{
-		data->render_complete = true;
-		return ;
-	}
-	x = 0;
-	while (x < WIDTH)
-	{
-		ray = create_ray(x, data->current_row, &data->scene->camera);
-		color = trace_ray(ray, data->scene);
-		mlx_put_pixel(data->img, x, data->current_row, color);
-		x++;
-	}
-	data->current_row++;
-}
-
-// Allocate and initialize render data
-t_render_data	*init_render_data(mlx_t *mlx, t_scene *scene,
-										mlx_image_t *img)
-{
-	t_render_data	*data;
-
-	data = malloc(sizeof(t_render_data));
-	if (!data)
-		exit_with_error("Failed to allocate render data");
-	data->mlx = mlx;
-	data->img = img;
-	data->scene = scene;
-	data->current_row = 0;
-	data->render_complete = false;
-	return (data);
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return (result);
 }
