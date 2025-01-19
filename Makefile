@@ -1,6 +1,6 @@
 NAME = miniRT
 CC = cc
-CFLAGS = -Ofast -Wall -Wextra -Wextra -I./includes
+CFLAGS = -Ofast -Wall -Wextra -Werror -I./includes
 MLX_FLAGS = -L./MLX42/build -lmlx42 -ldl -lglfw -pthread -lm
 # --suppressions="mlx42.supp" 
 LIBFTDIR 		:=	libft/
