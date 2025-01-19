@@ -54,6 +54,7 @@ clean:
 	rm -rf $(LIBMLX)/build
 
 fclean: clean
+	$(MAKE) -C $(LIBFTDIR) fclean
 	rm -rf miniRT
 	rm -rf MLX42/
 
