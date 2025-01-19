@@ -100,4 +100,16 @@ typedef struct s_render_data
 	bool		render_complete;
 }	t_render_data;
 
+typedef struct s_create_ray
+{
+	t_ray		ray;
+	double		aspect_ratio;
+	double		fov_scale;
+	double		norm_x;
+	double		norm_y;
+	t_vector	right;
+	t_vector	up;
+}	t_create_ray;
+
+
 #endif // SCENE_H
