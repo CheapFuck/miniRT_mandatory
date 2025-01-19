@@ -6,7 +6,7 @@
 /*   By: thivan-d <thivan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/01/19 14:10:33 by thivan-d      #+#    #+#                 */
-/*   Updated: 2025/01/19 14:10:35 by thivan-d      ########   odam.nl         */
+/*   Updated: 2025/01/19 14:50:40 by thivan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 # define WIDTH      640
 # define HEIGHT     480
-# define SAMPLES    1
+# define SAMPLES    8
 # define EPSILON	1e-6
 
 #endif // MINIRT_H
